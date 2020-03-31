@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "edu.fsu.cs.socialdistancing2020"
+        applicationId "edu.fsu.cs.wheresat"
         minSdkVersion 15
         targetSdkVersion 29
         versionCode 1

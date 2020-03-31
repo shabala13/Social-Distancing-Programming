@@ -1,4 +1,4 @@
-package edu.fsu.cs.socialdistancing2020;
+package edu.fsu.cs.wheresat;
 
 import org.junit.Test;
 
