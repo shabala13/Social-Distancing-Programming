@@ -1,0 +1,115 @@
+# this is an auto generated file. This will be overwritten
+subscription OnCreateItem {
+  onCreateItem {
+    id
+    name
+    searchCount
+    entry {
+      price
+      pictures
+      location
+      timestamp
+      notes
+    }
+  }
+}
+subscription OnUpdateItem {
+  onUpdateItem {
+    id
+    name
+    searchCount
+    entry {
+      price
+      pictures
+      location
+      timestamp
+      notes
+    }
+  }
+}
+subscription OnDeleteItem {
+  onDeleteItem {
+    id
+    name
+    searchCount
+    entry {
+      price
+      pictures
+      location
+      timestamp
+      notes
+    }
+  }
+}
+subscription OnCreateEntry {
+  onCreateEntry {
+    price
+    pictures
+    location
+    timestamp
+    notes
+  }
+}
+subscription OnUpdateEntry {
+  onUpdateEntry {
+    price
+    pictures
+    location
+    timestamp
+    notes
+  }
+}
+subscription OnDeleteEntry {
+  onDeleteEntry {
+    price
+    pictures
+    location
+    timestamp
+    notes
+  }
+}
+subscription OnCreateUser {
+  onCreateUser {
+    id
+    points
+    levelName
+    requestHistory {
+      itemNames
+    }
+  }
+}
+subscription OnUpdateUser {
+  onUpdateUser {
+    id
+    points
+    levelName
+    requestHistory {
+      itemNames
+    }
+  }
+}
+subscription OnDeleteUser {
+  onDeleteUser {
+    id
+    points
+    levelName
+    requestHistory {
+      itemNames
+    }
+  }
+}
+subscription OnCreateRequestHistory {
+  onCreateRequestHistory {
+    itemNames
+  }
+}
+subscription OnUpdateRequestHistory {
+  onUpdateRequestHistory {
+    itemNames
+  }
+}
+subscription OnDeleteRequestHistory {
+  onDeleteRequestHistory {
+    itemNames
+  }
+}

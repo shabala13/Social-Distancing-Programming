@@ -1,0 +1,20 @@
+{
+    "android": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-socialdistancingprog-android-114826-authRole",
+            "UnauthRoleArn": "arn:aws:iam::725857554547:role/amplify-socialdistancingprog-android-114826-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::725857554547:role/amplify-socialdistancingprog-android-114826-authRole",
+            "Region": "eu-west-2",
+            "DeploymentBucketName": "amplify-socialdistancingprog-android-114826-deployment",
+            "UnauthRoleName": "amplify-socialdistancingprog-android-114826-unauthRole",
+            "StackName": "amplify-socialdistancingprog-android-114826",
+            "StackId": "arn:aws:cloudformation:eu-west-2:725857554547:stack/amplify-socialdistancingprog-android-114826/65ce5080-74f9-11ea-9dda-02949b77ae4a",
+            "AmplifyAppId": "dnel74g5umpj8"
+        },
+        "categories": {
+            "auth": {
+                "cognitoa72be59a": {}
+            }
+        }
+    }
+}

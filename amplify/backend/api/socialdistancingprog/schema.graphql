@@ -1,0 +1,25 @@
+type Item @model {
+  id: ID!
+  name: String!
+  searchCount: Int!
+  entry: [Entry!] 
+}
+
+type Entry @model {
+	price: Float!
+	pictures: String!
+	location: String!
+	timestamp: String!
+	notes: String
+}
+
+type User @model {
+  id: ID!
+  points: Int!
+  levelName: String!
+  requestHistory: [RequestHistory!]
+}
+
+type RequestHistory @model {
+	itemNames: String!
+}
