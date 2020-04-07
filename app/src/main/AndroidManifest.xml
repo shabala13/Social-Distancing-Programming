@@ -16,10 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".home_page"></activity>
         <activity
             android:name=".ProductPageActivity"
-            android:label="@string/title_activity_product_page"
-            />
+            android:label="@string/title_activity_product_page" />
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 

@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getBaseContext(), ProductPageActivity.class);
-                startActivity(i);
+                Intent home_intent = new Intent(getBaseContext(), home_page.class);
+                startActivity(home_intent);
             }
         });
 

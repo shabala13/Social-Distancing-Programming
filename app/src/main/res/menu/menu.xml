@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/product_page_selection"
+        android:title="@string/title_activity_product_page" />
+    <item
+        android:id="@+id/exit_selection"
+        android:title="Exit" />
+
+</menu>
