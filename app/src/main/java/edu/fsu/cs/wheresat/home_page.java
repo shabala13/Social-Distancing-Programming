@@ -57,7 +57,10 @@ public class home_page extends AppCompatActivity {
             case R.id.product_page_selection:
                 Intent product_page_intent = new Intent(getBaseContext(), ProductPageActivity.class);
                 startActivity(product_page_intent);
-            case R.id.exit_selection:
+            case R.id.profile_page_selection:
+                Intent profile_page_selection = new Intent(getBaseContext(), ProfileActivity.class);
+                startActivity(profile_page_selection);
+            case R.id.close_selection:
                 finish();
                 break;
         }

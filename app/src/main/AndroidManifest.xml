@@ -20,6 +20,14 @@
             android:name=".ProductPageActivity"
             android:label="@string/title_activity_product_page"
             />
+        <activity
+            android:name=".home_page"
+            android:label="@string/title_home_page"
+            />
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_profile_page"
+            />
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
