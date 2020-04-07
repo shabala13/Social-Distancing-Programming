@@ -1,35 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="79dp"
-        tools:layout_editor_absoluteY="260dp" />
+<EditText
+    android:id="@+id/username"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/appName"
+    android:layout_centerHorizontal="true"
+    android:layout_marginStart="79dp"
+    android:layout_marginLeft="79dp"
+    android:layout_marginTop="100dp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    android:text="Name" />
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        tools:layout_editor_absoluteX="73dp"
-        tools:layout_editor_absoluteY="345dp" />
+<EditText
+    android:id="@+id/password"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/username"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="40dp"
+    android:ems="10"
+    android:inputType="textPassword"
+    android:text="Password" />
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="login"
-        tools:layout_editor_absoluteX="121dp"
-        tools:layout_editor_absoluteY="435dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+<Button
+    android:id="@+id/loginButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/password"
+    android:layout_centerHorizontal="true"
+    android:layout_marginStart="121dp"
+    android:layout_marginLeft="121dp"
+    android:layout_marginTop="45dp"
+    android:background="#3F51B5"
+    android:shadowColor="#3F51B5"
+    android:text="login"
+    android:textAllCaps="true"
+    android:textColor="#FFFFFF"
+    android:textColorHighlight="#3F51B5" />
+
+<TextView
+    android:id="@+id/appName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="30dp"
+    android:text="wheres@"
+    android:textColor="#3F51B5"
+    android:textSize="40sp" />
+</RelativeLayout>
