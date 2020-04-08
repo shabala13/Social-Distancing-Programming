@@ -1,6 +1,7 @@
 package edu.fsu.cs.wheresat;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,10 +17,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
+
+    // needs to be public static and have a default constructor to be serialized.
+    // also fields need to be public or have getters and setters
+    public static class User{
+        public User() {}
+
+        public String level;
+        public int points;
+    }
 
     private String TAG = "MainActivity";
 
@@ -76,9 +90,26 @@ public class MainActivity extends AppCompatActivity {
                             firebaseUser = firebaseAuth.getCurrentUser();
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef = database.getReference();
+                            DatabaseReference myRef = database.getReference(firebaseUser.getUid());
 
-                            Log.d(TAG, myRef.child(firebaseUser.getUid()).child("name").toString());
+                            Log.d(TAG, firebaseUser.getUid());
+
+                            // addListenerForSingleValueEvent reads a value from the DB immediately
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    // serialize the result from firebaseUser.getUid() into a User object
+                                    User user = dataSnapshot.getValue(User.class);
+                                    Log.d(TAG, user.level);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.d(TAG, "error");
+                                }
+                            });
+
+
                             // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
