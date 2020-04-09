@@ -1,16 +1,17 @@
 package edu.fsu.cs.wheresat;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,7 +22,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
     // Contains user account information when login is successful
     private FirebaseUser firebaseUser;
 
+    // UI elements
     private EditText pass, user;
-
     private ListView requestList;
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> requestListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        Button login = findViewById(R.id.loginButton);
-
         user = findViewById(R.id.username);
         pass = findViewById(R.id.password);
-
         requestList = findViewById(R.id.requestList);
     }
 
@@ -116,12 +113,16 @@ public class MainActivity extends AppCompatActivity {
                                     // populate the request history ListView
                                     List<String> requests = new ArrayList<>();
 
-                                    // iterate over the requests in the HashMap
-                                    for (HashMap.Entry<String, String> entry : user.requestHistory.entrySet())
-                                        requests.add(entry.getKey() + " " + entry.getValue());
+                                    // iterate over the requests in the HashMap (if the account has
+                                    // requests)
+                                    if (user.requestHistory != null)
+                                    {
+                                        for (HashMap.Entry<String, String> entry : user.requestHistory.entrySet())
+                                            requests.add(entry.getKey() + " " + entry.getValue());
 
-                                    adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, requests);
-                                    requestList.setAdapter(adapter);
+                                        requestListAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, requests);
+                                        requestList.setAdapter(requestListAdapter);
+                                    }
                                 }
 
                                 @Override
@@ -140,4 +141,91 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
+
+
+    /*  NOTE: THIS METHOD DOES NOT DO ERROR CHECKING SUCH AS CONFIRMING IF THE AUTOCOMPLETETEXTVIEWS
+        ARE EMPTY OR NOT OR IF THE PASSWORD MATCHES THE CONFIRMPASSWORD.
+
+        It does, however, have Firebase's built in error checking, such as if the password is not
+        long enough, or if the user exists already.
+    */
+    public void createUser(View view) {
+        // create a Dialog for the user to enter an email and password
+        // AlertDialog adapted from https://stackoverflow.com/questions/10903754/
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        builder.setTitle("Create new user account");
+
+        // this dialog is using a custom layout I made in fragment_create_user.xml
+        final View dialogView = LayoutInflater.from(this).inflate(R.layout.fragment_create_user,
+                (ViewGroup) findViewById(android.R.id.content), false);
+
+        // AutoCompleteTextView can be changed to EditText. I used this to try and make a good looking
+        // UI, but it doesn't seem to have changed much. If we do decide to change it (and keep the
+        // existing XML layout), remember to change the types in the XML from AutoCompleteTextView
+        final AutoCompleteTextView email = dialogView.findViewById(R.id.create_email);
+        final AutoCompleteTextView password = dialogView.findViewById(R.id.create_pass);
+        final AutoCompleteTextView confirmPass = dialogView.findViewById(R.id.confirm_pass);
+
+        builder.setView(dialogView);
+
+        // set up dialog buttons
+        builder.setPositiveButton("Create account", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+                firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(),
+                        password.getText().toString()).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // get the new user (once the account is created, it is automatically
+                                // signed in and given to firebaseAuth
+                                firebaseUser = firebaseAuth.getCurrentUser();
+
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                                // get a top level reference in the DB
+                                DatabaseReference topRef = database.getReference();
+
+                                // create a new User object to serialize
+                                User user = new User();
+                                user.level = "bronze";
+                                user.points = 0;
+                                user.requestHistory = null;
+
+                                // this call adds the UID and the User POJO into the DB. by using
+                                // child().setValue(), it will create the child entry (the UID) if
+                                // it doesn't exist.
+                                topRef.child(firebaseUser.getUid()).setValue(user);
+
+                                dialog.dismiss();
+
+                            } else {
+                                // print a Toast with the reason the sign in didn't work (this will check
+                                // if the account already exists)
+                                showToast(task.getException().getMessage());
+                            }
+                        }
+                    });
+                }
+        });
+
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog createUserDialog = builder.create();
+        createUserDialog.show();
+    }
+
+    // Toast doesn't work inside the dialog for some reason, so just created a helper to call it
+    // from inside the dialog
+    public void showToast(String message)
+    {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }
