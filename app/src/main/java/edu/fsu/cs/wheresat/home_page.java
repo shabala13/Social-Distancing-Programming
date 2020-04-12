@@ -55,11 +55,18 @@ public class home_page extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.product_page_selection:
-                Intent product_page_intent = new Intent(getBaseContext(), ProductPageActivity.class);
+                Intent product_page_intent = new Intent(this, ProductPageActivity.class);
                 startActivity(product_page_intent);
+                break;
             case R.id.profile_page_selection:
-                Intent profile_page_selection = new Intent(getBaseContext(), ProfileActivity.class);
+                Intent profile_page_selection = new Intent(this, ProfileActivity.class);
                 startActivity(profile_page_selection);
+                break;
+            case R.id.search_result_list:
+                // TODO: Bundle search into transfer to new search result
+                Intent new_search = new Intent(this, result_page.class);
+                startActivity(new_search);
+                break;
             case R.id.close_selection:
                 finish();
                 break;

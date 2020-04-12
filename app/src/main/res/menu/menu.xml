@@ -7,6 +7,9 @@
         android:id="@+id/profile_page_selection"
         android:title="@string/title_profile_page" />
     <item
+        android:id="@+id/search_result_list"
+        android:title="@string/title_search_result_page" />
+    <item
         android:id="@+id/close_selection"
         android:title="@string/close" />
 
