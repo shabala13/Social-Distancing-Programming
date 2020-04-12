@@ -18,9 +18,7 @@ public class Product {
         name = nameText;
     }
 
-    public String getBrand() {
-        return brand;
-    }
+    public String getBrand() { return brand; }
     public void setBrand(String brand) {
         this.brand = brand;
     }

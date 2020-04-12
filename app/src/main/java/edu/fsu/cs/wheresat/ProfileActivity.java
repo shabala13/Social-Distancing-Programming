@@ -27,7 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent return_home = new Intent(getApplicationContext(), home_page.class);
+                Intent return_home = new Intent(getApplicationContext(), HomePageActivity.class);
                 startActivity(return_home);
             }
         });

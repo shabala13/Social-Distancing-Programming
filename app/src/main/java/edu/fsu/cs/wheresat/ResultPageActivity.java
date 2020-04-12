@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -15,7 +14,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-public class result_page extends Activity {
+public class ResultPageActivity extends Activity {
     private ListView listViewProduct;
     private Context ctx;
     private ImageButton back_button;
@@ -31,7 +30,7 @@ public class result_page extends Activity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent return_home = new Intent(getApplicationContext(), home_page.class);
+                Intent return_home = new Intent(getApplicationContext(), HomePageActivity.class);
                 startActivity(return_home);
             }
         });
@@ -52,7 +51,7 @@ public class result_page extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Product o = (Product) parent.getItemAtPosition(position);
-                Toast.makeText(result_page.this, o.getName().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResultPageActivity.this, o.getName().toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

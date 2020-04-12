@@ -16,15 +16,16 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:tint="#454040"
-            app:srcCompat="@drawable/abc_vector_test" />
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/return_home" />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Search Results"
+            android:text="@string/result_title_holder"
             android:textColor="#008000"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
     </RelativeLayout>
 

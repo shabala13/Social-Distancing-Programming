@@ -6,11 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuInflater;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class home_page extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity {
     String[] temp_result_list = {
             "Toilet Paper",
             "Gummy Worms",
@@ -58,15 +57,18 @@ public class home_page extends AppCompatActivity {
                 Intent product_page_intent = new Intent(this, ProductPageActivity.class);
                 startActivity(product_page_intent);
                 break;
+
             case R.id.profile_page_selection:
                 Intent profile_page_selection = new Intent(this, ProfileActivity.class);
                 startActivity(profile_page_selection);
                 break;
+
             case R.id.search_result_list:
                 // TODO: Bundle search into transfer to new search result
-                Intent new_search = new Intent(this, result_page.class);
+                Intent new_search = new Intent(this, ResultPageActivity.class);
                 startActivity(new_search);
                 break;
+
             case R.id.close_selection:
                 finish();
                 break;

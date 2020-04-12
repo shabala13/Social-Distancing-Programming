@@ -35,10 +35,7 @@ public class ProductListAdapter extends ArrayAdapter<Product> {
         // Getting reference image from Drawable section
         // TODO: Figure out how to grab image from DB and set it to product image (Drawable?)
         String image_name = product.getImage();
-        Log.i("RESULTS", image_name);
         int imageResource = getContext().getResources().getIdentifier(image_name, "drawable", context.getPackageName());
-        //int imageResource = getContext().getResources().getIdentifier("charminultrastrong", "drawable", context.getPackageName());
-                                    Log.i("RESULTS", "imageResource stored as");
         Drawable image = getContext().getResources().getDrawable(imageResource);
 
         // Setting product listing Name, Brand, and Image
