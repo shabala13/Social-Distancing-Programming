@@ -14,6 +14,7 @@ public class Item {
     public Item(){};
 
     // add location, notes, picture, price, and timestamp fields when needed to this HashMap
+   // public String name;
     public HashMap<String, String> entry;
-    public int searchCount;
+    public long searchCount;
 }

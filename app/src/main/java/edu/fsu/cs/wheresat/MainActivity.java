@@ -1,23 +1,34 @@
 package edu.fsu.cs.wheresat;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +38,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +56,7 @@ Test UI to demonstrate Firebase operations for login and account creation
  */
 
 public class MainActivity extends AppCompatActivity {
+    private static final int PICK_IMAGE_REQUEST = 1;
     private String TAG = "MainActivity";
 
     // Authentication for user accounts
@@ -49,6 +69,14 @@ public class MainActivity extends AppCompatActivity {
     private EditText pass, user;
     private ListView requestList;
     private ArrayAdapter<String> requestListAdapter;
+    private Button post, itemL;
+
+    DatabaseReference dataRef, itemref;
+    private Uri uri;
+    private StorageReference storageRef;
+    private StorageTask uploadTask;
+    private Item product;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +84,113 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        storageRef = FirebaseStorage.getInstance().getReference();
+        dataRef = FirebaseDatabase.getInstance().getReference();
+        itemref = FirebaseDatabase.getInstance().getReference();
+
+
 
         user = findViewById(R.id.username);
         pass = findViewById(R.id.password);
         requestList = findViewById(R.id.requestList);
+        post = findViewById(R.id.Post);
+        itemL = findViewById(R.id.ItemLink);
+
+
+        post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                openFileChooser();
+
+
+            }
+        });
+
+
+        itemL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Not Done yet", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
+    }
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            uri = data.getData();
+            Log.d("IMAGE_PICKED",uri.toString());
+           // Picasso.with(this).load(mImageUri).into(mImageView);
+            upload();
+        }
+        else
+            Log.d("IMAGE_NOT_PICKED","somthing is wrong.");
+    }
+    private String getFileExtension(Uri turi) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(turi));
+    }
+    private void upload(){
+
+        if(uri != null) {
+            Log.d("URI_SUCCESS", "URI loaded successfully");
+            // StorageReference fileRef= storageRef.child("Toilet_Paper.jpg");
+            product = new Item();
+            product.entry = new HashMap<>();
+            //product.name = "Toliet Paper";D:\mtric\Documents\GitHub\Social-Distancing-Programming\app\src\main\res\layout\activity_main.xml
+            //uri = Uri.fromFile(new File(getApplicationContext().getResources().getP(R.drawable.testimage));
+            StorageReference fileReference = storageRef.child(System.currentTimeMillis()
+                    + "." + getFileExtension(uri));
+            uploadTask = fileReference.putFile(uri)
+                    //uploadTask = storageRef.putBytes(data)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+
+                            taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri url) {
+                                    String imageURL = url.toString();
+                                    product.entry.put("Publix", imageURL);
+                                    // uploadId = dataRef.push().getKey();
+                                    //dataRef.child(uploadId).setValue(product);
+                                    String uploadId = itemref.push().getKey();
+                                    itemref.child("Toilet_Paper").setValue(product);
+                                }
+                            });
+                            //Toast.makeText(MainActivity.this, taskSnapshot.getMetadata().getReference().getPath().toString() , Toast.LENGTH_SHORT).show();
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                               /* double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                                mProgressBar.setProgress((int) progress);*/
+                        }
+                    });
+        }
+        else
+            Log.d("URI_FAIL", "URI has failed to load");
+
     }
 
     @Override

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "986672048086-ir522ssiu4g4nhvmcacfkg29fmstvm2b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.fsu.cs.wheresat",
+            "certificate_hash": "8c2578287f9caa19ea0c38c151336ced2a016eea"
+          }
+        },
+        {
           "client_id": "986672048086-0r5nkeklu1e09jgardut6evfg1rkhabb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

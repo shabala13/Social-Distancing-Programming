@@ -192,4 +192,31 @@
         android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/requestHistory" />
+
+    <Button
+        android:id="@+id/Post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="203dp"
+        android:layout_marginRight="203dp"
+        android:layout_marginBottom="150dp"
+        android:text="@string/Post"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintEnd_toStartOf="@+id/ItemLink"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/ItemLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="203dp"
+        android:layout_marginLeft="203dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:text="@string/Item"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintStart_toEndOf="@+id/Post"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
