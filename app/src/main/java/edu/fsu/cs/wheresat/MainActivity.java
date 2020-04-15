@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText pass, user;
     private ListView requestList;
     private ArrayAdapter<String> requestListAdapter;
-    private Button login;
+    private Button login, createAcct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +64,19 @@ public class MainActivity extends AppCompatActivity {
         pass = findViewById(R.id.password);
         //requestList = findViewById(R.id.requestList);
         login = findViewById(R.id.loginButton);
+        createAcct = findViewById(R.id.create_acct);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loginUser(view);
+            }
+        });
+
+        createAcct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createUser(view);
             }
         });
     }
@@ -174,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         // AlertDialog adapted from https://stackoverflow.com/questions/10903754/
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-        builder.setTitle("Create new user account");
+        builder.setTitle("Create New User Account");
 
         // this dialog is using a custom layout I made in fragment_create_user.xml
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.fragment_create_user,
