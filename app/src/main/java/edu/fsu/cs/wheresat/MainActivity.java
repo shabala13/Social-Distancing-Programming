@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText pass, user;
     private ListView requestList;
     private ArrayAdapter<String> requestListAdapter;
+    private Button login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,15 @@ public class MainActivity extends AppCompatActivity {
 
         user = findViewById(R.id.username);
         pass = findViewById(R.id.password);
-        requestList = findViewById(R.id.requestList);
+        //requestList = findViewById(R.id.requestList);
+        login = findViewById(R.id.loginButton);
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginUser(view);
+            }
+        });
     }
 
     @Override
@@ -72,14 +83,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loginUser(View view) {
-        // login is not synchronous (i.e. it does not happen instantly). if you need to access data
-        // immediately after login, do that in the onComplete() function below and not elsewhere
-        firebaseAuth.signInWithEmailAndPassword(user.getText().toString(), pass.getText().toString())
-                .addOnCompleteListener(  MainActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success. update TextViews in Activity
+
+        if(user.getText().toString().equals("") || pass.getText().toString().equals("")) {
+            showToast("Please enter a valid username and password.");
+        } else {
+            // login is not synchronous (i.e. it does not happen instantly). if you need to access data
+            // immediately after login, do that in the onComplete() function below and not elsewhere
+            firebaseAuth.signInWithEmailAndPassword(user.getText().toString(), pass.getText().toString())
+                    .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+/*                            // Sign in success. update TextViews in Activity
                             TextView uid = findViewById(R.id.uid);
                             TextView email = findViewById(R.id.email);
 
@@ -130,15 +145,19 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d(TAG, "Did not find any entry for this user");
                                 }
                             });
-                        }
+                        } */
 
-                        else {
-                            // If sign in fails, display a message to the user
-                            Toast.makeText(MainActivity.this, "Incorrect Email or Password.",
-                                    Toast.LENGTH_SHORT).show();
+
+                                Intent home_intent = new Intent(getBaseContext(), HomePageActivity.class);
+                                startActivity(home_intent);
+                            } else {
+                                // If sign in fails, display a message to the user
+                                Toast.makeText(MainActivity.this, "Incorrect Email or Password.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
 
