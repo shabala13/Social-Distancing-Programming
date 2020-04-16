@@ -4,22 +4,28 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +35,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +50,7 @@ Test UI to demonstrate Firebase operations for login and account creation
  */
 
 public class MainActivity extends AppCompatActivity {
+    private static final int PICK_IMAGE_REQUEST = 1;
     private String TAG = "MainActivity";
 
     // Authentication for user accounts
@@ -53,12 +65,21 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> requestListAdapter;
     private Button login, createAcct;
 
+    DatabaseReference dataRef, itemref;
+    private Uri uri;
+    private StorageReference storageRef;
+    private StorageTask uploadTask;
+    private Item product;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        storageRef = FirebaseStorage.getInstance().getReference();
+        dataRef = FirebaseDatabase.getInstance().getReference();
+        itemref = FirebaseDatabase.getInstance().getReference();
 
         user = findViewById(R.id.username);
         pass = findViewById(R.id.password);
@@ -79,6 +100,61 @@ public class MainActivity extends AppCompatActivity {
                 createUser(view);
             }
         });
+    }
+
+    private String getFileExtension(Uri turi) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(turi));
+    }
+
+    private void upload(){
+        if(uri != null) {
+            Log.d("URI_SUCCESS", "URI loaded successfully");
+            // StorageReference fileRef= storageRef.child("Toilet_Paper.jpg");
+            product = new Item();
+            product.entry = new HashMap<>();
+            //product.name = "Toliet Paper";D:\mtric\Documents\GitHub\Social-Distancing-Programming\app\src\main\res\layout\activity_main.xml
+            //uri = Uri.fromFile(new File(getApplicationContext().getResources().getP(R.drawable.testimage));
+            StorageReference fileReference = storageRef.child(System.currentTimeMillis()
+                    + "." + getFileExtension(uri));
+            uploadTask = fileReference.putFile(uri)
+                    //uploadTask = storageRef.putBytes(data)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+
+                            taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri url) {
+                                    String imageURL = url.toString();
+                                    product.entry.put("Publix", imageURL);
+                                    // uploadId = dataRef.push().getKey();
+                                    //dataRef.child(uploadId).setValue(product);
+                                    String uploadId = itemref.push().getKey();
+                                    itemref.child("Toilet_Paper").setValue(product);
+                                }
+                            });
+                            //Toast.makeText(MainActivity.this, taskSnapshot.getMetadata().getReference().getPath().toString() , Toast.LENGTH_SHORT).show();
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                               /* double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                                mProgressBar.setProgress((int) progress);*/
+                        }
+                    });
+        }
+        else
+            Log.d("URI_FAIL", "URI has failed to load");
+
     }
 
     @Override
@@ -102,61 +178,17 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-/*                            // Sign in success. update TextViews in Activity
-                            TextView uid = findViewById(R.id.uid);
-                            TextView email = findViewById(R.id.email);
-
-                            // firebaseUser gets the user's information (email, UID) from auth
-                            firebaseUser = firebaseAuth.getCurrentUser();
-
-                            // UID is the key for an account stored in the DB
-                            uid.setText(firebaseUser.getUid());
-                            email.setText(firebaseUser.getEmail());
-
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                            // navigate to UID's entry in the database
-                            DatabaseReference userRef = database.getReference(firebaseUser.getUid());
-
-                            // this event listener (addListenerForSingleValueEvent) reads values from the
-                            // DB immediately. there are other callbacks to read values later if desired
-                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    // serialize the result from userRef into a User object
-                                    User user = dataSnapshot.getValue(User.class);
-
-                                    // update the rest of the TextViews
-                                    TextView level = findViewById(R.id.level);
-                                    TextView points = findViewById(R.id.points);
-
-                                    level.setText(user.level);
-                                    points.setText(Long.toString(user.points));
-
-                                    // populate the request history ListView
-                                    List<String> requests = new ArrayList<>();
-
-                                    // iterate over the requests in the HashMap (if the account has
-                                    // requests)
-                                    if (user.requestHistory != null)
-                                    {
-                                        for (HashMap.Entry<String, String> entry : user.requestHistory.entrySet())
-                                            requests.add(entry.getKey() + " " + entry.getValue());
-
-                                        requestListAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, requests);
-                                        requestList.setAdapter(requestListAdapter);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    Log.d(TAG, "Did not find any entry for this user");
-                                }
-                            });
-                        } */
-
 
                                 Intent home_intent = new Intent(getBaseContext(), HomePageActivity.class);
+                                Bundle bundle = new Bundle();
+
+                                // firebaseUser gets the user's information (email, UID) from auth
+                                firebaseUser = firebaseAuth.getCurrentUser();
+
+                                // put this user in a bundle attached to the home page activity intent
+                                bundle.putParcelable("user", firebaseUser);
+                                home_intent.putExtras(bundle);
+
                                 startActivity(home_intent);
                             } else {
                                 // If sign in fails, display a message to the user

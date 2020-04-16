@@ -75,23 +75,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/mark_as_sold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mark As Sold"
+                        android:layout_marginTop="20dp"/>
+
+                    <Button
+                        android:id="@+id/view_on_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="View On Map"
+                        android:layout_marginTop="20dp"/>
+                </LinearLayout>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/map"
-                android:layout_width="259dp"
-                android:layout_height="220dp"
-                android:layout_below="@+id/product_info"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:src="@mipmap/map_image" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mark As Sold"
-                android:layout_below="@+id/map"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"/>
 
         </RelativeLayout>
     </ScrollView>
