@@ -9,6 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,20 +31,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /*
 Test UI to demonstrate Firebase operations for login and account creation
@@ -60,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
 
     // UI elements
-    private EditText pass, user;
+    private EditText pass, email;
     private ListView requestList;
     private ArrayAdapter<String> requestListAdapter;
     private Button login, createAcct;
@@ -70,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
     private StorageReference storageRef;
     private StorageTask uploadTask;
     private Item product;
+
+    boolean emailEmpty = true;
+    boolean passwordEmpty = true;
+    boolean confirmPassEmpty = true;
+
+    AutoCompleteTextView dialogEmailEditText;
+    AutoCompleteTextView dialogPassEditText;
+    AutoCompleteTextView dialogConfirmPassEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         dataRef = FirebaseDatabase.getInstance().getReference();
         itemref = FirebaseDatabase.getInstance().getReference();
 
-        user = findViewById(R.id.username);
+        email = findViewById(R.id.username);
         pass = findViewById(R.id.password);
         //requestList = findViewById(R.id.requestList);
         login = findViewById(R.id.loginButton);
@@ -168,12 +172,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void loginUser(View view) {
 
-        if(user.getText().toString().equals("") || pass.getText().toString().equals("")) {
+        if(email.getText().toString().equals("") || pass.getText().toString().equals("")) {
             showToast("Please enter a valid username and password.");
         } else {
             // login is not synchronous (i.e. it does not happen instantly). if you need to access data
             // immediately after login, do that in the onComplete() function below and not elsewhere
-            firebaseAuth.signInWithEmailAndPassword(user.getText().toString(), pass.getText().toString())
+            firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), pass.getText().toString())
                     .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -200,15 +204,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-    /*  NOTE: THIS METHOD DOES NOT DO ERROR CHECKING SUCH AS CONFIRMING IF THE AUTOCOMPLETETEXTVIEWS
-        ARE EMPTY OR NOT OR IF THE PASSWORD MATCHES THE CONFIRMPASSWORD.
-
-        It does, however, have Firebase's built in error checking, such as if the password is not
-        long enough, or if the user exists already.
-    */
     public void createUser(View view) {
         // create a Dialog for the user to enter an email and password
         // AlertDialog adapted from https://stackoverflow.com/questions/10903754/
@@ -223,9 +218,9 @@ public class MainActivity extends AppCompatActivity {
         // AutoCompleteTextView can be changed to EditText. I used this to try and make a good looking
         // UI, but it doesn't seem to have changed much. If we do decide to change it (and keep the
         // existing XML layout), remember to change the types in the XML from AutoCompleteTextView
-        final AutoCompleteTextView email = dialogView.findViewById(R.id.create_email);
-        final AutoCompleteTextView password = dialogView.findViewById(R.id.create_pass);
-        final AutoCompleteTextView confirmPass = dialogView.findViewById(R.id.confirm_pass);
+        dialogEmailEditText = dialogView.findViewById(R.id.create_email);
+        dialogPassEditText = dialogView.findViewById(R.id.create_pass);
+        dialogConfirmPassEditText = dialogView.findViewById(R.id.confirm_pass);
 
         builder.setView(dialogView);
 
@@ -233,8 +228,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Create account", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
-                firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(),
-                        password.getText().toString()).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                firebaseAuth.createUserWithEmailAndPassword(dialogEmailEditText.getText().toString(),
+                        dialogConfirmPassEditText.getText().toString()).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
@@ -277,8 +272,59 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        AlertDialog createUserDialog = builder.create();
+        final AlertDialog createUserDialog = builder.create();
         createUserDialog.show();
+
+        // disable the create account button immediately since the text fields are empty
+        createUserDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+        // add the TextWatchers to make sure the text fields aren't empty and that password matches
+        // confirm password
+
+        dialogEmailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                emailEmpty = TextUtils.isEmpty(s);
+
+                createUserDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(verifyInput());
+            }
+        });
+
+        dialogPassEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                passwordEmpty = TextUtils.isEmpty(s);
+
+                createUserDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(verifyInput());
+            }
+        });
+
+        dialogConfirmPassEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                confirmPassEmpty = TextUtils.isEmpty(s);
+
+                createUserDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(verifyInput());
+            }
+        });
     }
 
     // Toast doesn't work inside the dialog for some reason, so just created a helper to call it
@@ -286,5 +332,13 @@ public class MainActivity extends AppCompatActivity {
     public void showToast(String message)
     {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public boolean verifyInput()
+    {
+        if (emailEmpty || passwordEmpty || confirmPassEmpty)
+            return false;
+
+        return dialogConfirmPassEditText.getText().toString().equals(dialogPassEditText.getText().toString());
     }
 }
