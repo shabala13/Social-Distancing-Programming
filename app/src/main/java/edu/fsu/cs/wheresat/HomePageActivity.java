@@ -24,14 +24,17 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.utilities.Tree;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class HomePageActivity extends AppCompatActivity {
-    String[] temp_result_list = new String[10];
+    List<String> temp_result_list = new ArrayList<>();
 
     ListView top_search_view;
     final String TAG = "HomePageActivity";
@@ -49,25 +52,32 @@ public class HomePageActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        // get DB references
+        // get DB reference
         topItemsRef = database.getReference("TOP10");
-        topRef = database.getReference();
 
         topItemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<TreeMap<Long, String>> genericTypeIndicator = new GenericTypeIndicator<TreeMap<Long, String>>() {};
-                TreeMap<Long, String> topTenItems = dataSnapshot.getValue(genericTypeIndicator);
+                // Firebase only allows us to directly serialize to a HashMap of Strings, so need to construct
+                // a new TreeMap with Integers after serialization
 
-                int i = 0;
-                NavigableMap map = topTenItems.descendingMap();
+                // get HashMap from DB
+                GenericTypeIndicator<HashMap<String, String>> genericTypeIndicator = new GenericTypeIndicator<HashMap<String, String>>() {};
+                HashMap<String, String> topTenItemsString = dataSnapshot.getValue(genericTypeIndicator);
 
-                for(NavigableMap.Entry<Long, String> entry : topTenItems.entrySet()) {
-                    temp_result_list[i++] = entry.getValue();
+                // Build TreeMap in ascending order
+                TreeMap<Integer, String> topTenItems = new TreeMap<>();
+
+                for (HashMap.Entry entry : topTenItemsString.entrySet())
+                    topTenItems.put(Integer.parseInt((String) entry.getKey()), (String) entry.getValue());
+
+                // add items to List<String> temp_result_list in descending order
+                for(NavigableMap.Entry<Integer, String> entry : topTenItems.descendingMap().entrySet()) {
+                    temp_result_list.add(entry.getValue());
                 }
 
                 // Creates an adapter for the ListView and uses it to fill view with temp_result_list
-                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, temp_result_list);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, temp_result_list);
                 top_search_view.setAdapter(adapter);
 
             }
@@ -77,12 +87,6 @@ public class HomePageActivity extends AppCompatActivity {
 
             }
         });
-
-
-        // TODO: Retrieve top result list and fill temp_result_list with it
-
-
-
     }
 
 
