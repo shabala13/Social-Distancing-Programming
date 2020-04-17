@@ -253,6 +253,14 @@ public class MainActivity extends AppCompatActivity {
                                 // it doesn't exist.
                                 topRef.child(firebaseUser.getUid()).setValue(user);
 
+                                // put this user in a bundle attached to the home page activity intent
+                                Intent home_intent = new Intent(getBaseContext(), HomePageActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putParcelable("user", firebaseUser);
+                                home_intent.putExtras(bundle);
+
+                                startActivity(home_intent);
+
                                 dialog.dismiss();
 
                             } else {

@@ -23,6 +23,9 @@
         <activity
             android:name=".HomePageActivity"
             android:label="@string/title_home_page" />
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_profile_page" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

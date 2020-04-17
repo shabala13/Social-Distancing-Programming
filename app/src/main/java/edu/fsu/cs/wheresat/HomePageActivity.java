@@ -100,11 +100,13 @@ public class HomePageActivity extends AppCompatActivity {
     // Manages the selection of the menu items
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        Bundle bundle;
+
         switch (item.getItemId()) {
             case R.id.product_page_selection:
                 Intent product_page_intent = new Intent(this, ProductPageActivity.class);
 
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putParcelable("user", firebaseUser);
                 product_page_intent.putExtras(bundle);
 
@@ -112,9 +114,11 @@ public class HomePageActivity extends AppCompatActivity {
                 break;
 
             case R.id.profile_page_selection:
-                // TODO uncomment
-//                Intent profile_page_selection = new Intent(this, ProfileActivity.class);
-//                startActivity(profile_page_selection);
+                Intent profile_page_selection = new Intent(this, ProfileActivity.class);
+                bundle = new Bundle();
+                bundle.putParcelable("user", firebaseUser);
+                profile_page_selection.putExtras(bundle);
+                startActivity(profile_page_selection);
                 break;
 
             case R.id.search_result_list:
