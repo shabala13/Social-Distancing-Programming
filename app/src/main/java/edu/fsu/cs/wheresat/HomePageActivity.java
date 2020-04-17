@@ -26,7 +26,7 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class HomePageActivity extends AppCompatActivity {
-    List<String> temp_result_list = new ArrayList<>();
+    List<String> top_result_list = new ArrayList<>();
 
     ListView top_search_view;
     final String TAG = "HomePageActivity";
@@ -65,11 +65,11 @@ public class HomePageActivity extends AppCompatActivity {
 
                 // add items to List<String> temp_result_list in descending order
                 for(NavigableMap.Entry<Integer, String> entry : topTenItems.descendingMap().entrySet()) {
-                    temp_result_list.add(entry.getValue());
+                    top_result_list.add(Utilities.toLowerCase(entry.getValue()));
                 }
 
                 // Creates an adapter for the ListView and uses it to fill view with temp_result_list
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, temp_result_list);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, top_result_list);
                 top_search_view.setAdapter(adapter);
 
             }
