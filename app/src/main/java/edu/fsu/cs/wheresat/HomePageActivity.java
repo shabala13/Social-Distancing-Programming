@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.icu.text.Edits;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.utilities.Tree;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ public class HomePageActivity extends AppCompatActivity {
                 Intent product_page_intent = new Intent(this, ProductPageActivity.class);
 
                 bundle = new Bundle();
-                bundle.putParcelable("user", firebaseUser);
+                bundle.putParcelable("user", (Parcelable) firebaseUser);
                 product_page_intent.putExtras(bundle);
 
                 startActivity(product_page_intent);
@@ -116,7 +116,7 @@ public class HomePageActivity extends AppCompatActivity {
             case R.id.profile_page_selection:
                 Intent profile_page_selection = new Intent(this, ProfileActivity.class);
                 bundle = new Bundle();
-                bundle.putParcelable("user", firebaseUser);
+                bundle.putParcelable("user", (Parcelable) firebaseUser);
                 profile_page_selection.putExtras(bundle);
                 startActivity(profile_page_selection);
                 break;
