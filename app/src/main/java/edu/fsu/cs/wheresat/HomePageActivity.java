@@ -1,22 +1,17 @@
 package edu.fsu.cs.wheresat;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.icu.text.Edits;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,17 +19,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class HomePageActivity extends AppCompatActivity {
-    List<String> temp_result_list = new ArrayList<>();
+    List<String> top_result_list = new ArrayList<>();
 
     ListView top_search_view;
     final String TAG = "HomePageActivity";
@@ -73,11 +65,11 @@ public class HomePageActivity extends AppCompatActivity {
 
                 // add items to List<String> temp_result_list in descending order
                 for(NavigableMap.Entry<Integer, String> entry : topTenItems.descendingMap().entrySet()) {
-                    temp_result_list.add(entry.getValue());
+                    top_result_list.add(entry.getValue());
                 }
 
                 // Creates an adapter for the ListView and uses it to fill view with temp_result_list
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, temp_result_list);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, top_result_list);
                 top_search_view.setAdapter(adapter);
 
             }
