@@ -20,6 +20,7 @@
             android:contentDescription="@string/return_home" />
 
         <TextView
+            android:id="@+id/searched_product"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

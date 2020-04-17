@@ -15,18 +15,20 @@ public class ProductListAdapter extends ArrayAdapter<Product> {
     private int resource;
     private LayoutInflater inflater;
     private Context context;
-    public ProductListAdapter ( Context ctx, int resourceId, List<Product> objects) {
-        super( ctx, resourceId, objects );
+
+    public ProductListAdapter(Context ctx, int resourceId, List<Product> objects) {
+        super(ctx, resourceId, objects);
         resource = resourceId;
-        inflater = LayoutInflater.from( ctx );
-        context=ctx;
+        inflater = LayoutInflater.from(ctx);
+        context = ctx;
     }
+
     @Override
     public View getView ( int position, View convertView, ViewGroup parent ) {
 
         // Connecting Views to Variables for editing
-        convertView = ( RelativeLayout ) inflater.inflate( resource, null );
-        Product product = getItem( position );
+        convertView = (RelativeLayout) inflater.inflate(resource, null);
+        Product product = getItem(position);
         TextView productName = (TextView) convertView.findViewById(R.id.productName);
         TextView productBrand = (TextView) convertView.findViewById(R.id.productBrand);
         ImageView productImage = (ImageView) convertView.findViewById(R.id.productImage);
