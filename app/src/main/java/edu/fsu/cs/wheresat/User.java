@@ -8,12 +8,25 @@ User needs to have a public default constructor to be serialized (loaded from DB
 to DB). Also, all fields must be public or have getters and setters to be serialized.
  */
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.NavigableMap;
 
 public class User {
     public User() {}
 
     public String level;
     public long points;
-    public HashMap<String, String> requestHistory;
+    public HashMap<String, HashMap<String, String>> requests;
+
+    public List<Request> getRequestList()
+    {
+        List<Request> list = new ArrayList<>();
+
+        for (HashMap<String, String> map : requests.values())
+            list.add(new Request(map.get("itemName"), map.get("date"), map.get("time")));
+
+        return list;
+    }
 }

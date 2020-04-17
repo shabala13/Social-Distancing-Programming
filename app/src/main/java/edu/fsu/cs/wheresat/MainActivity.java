@@ -244,9 +244,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 // create a new User object to serialize
                                 User user = new User();
-                                user.level = "bronze";
+                                user.level = "Bronze";
                                 user.points = 0;
-                                user.requestHistory = null;
+                                user.requests = null;
 
                                 // this call adds the UID and the User POJO into the DB. by using
                                 // child().setValue(), it will create the child entry (the UID) if
