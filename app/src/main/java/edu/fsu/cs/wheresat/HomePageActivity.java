@@ -65,7 +65,7 @@ public class HomePageActivity extends AppCompatActivity {
 
                 // add items to List<String> temp_result_list in descending order
                 for(NavigableMap.Entry<Integer, String> entry : topTenItems.descendingMap().entrySet()) {
-                    top_result_list.add(entry.getValue());
+                    top_result_list.add(Utilities.toLowerCase(entry.getValue()));
                 }
 
                 // Creates an adapter for the ListView and uses it to fill view with temp_result_list
