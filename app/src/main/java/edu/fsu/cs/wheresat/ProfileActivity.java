@@ -3,12 +3,12 @@ package edu.fsu.cs.wheresat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -18,9 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class ProfileActivity extends AppCompatActivity {
     TextView username, email, points, level;
     final String TAG = "ProfileActivity";
+    ListView requestList;
     ImageButton back_button;
     FirebaseUser firebaseUser;
 
@@ -40,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         points = (TextView) findViewById(R.id.points);
         level = (TextView) findViewById(R.id.level);
         back_button = (ImageButton) findViewById(R.id.back_image_button);
+        requestList = (ListView) findViewById(R.id.requestList);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -65,6 +69,8 @@ public class ProfileActivity extends AppCompatActivity {
                 else
                     level.setTextColor(Color.parseColor("#A46628"));
 
+                List<Request> request_list = user.getRequestList();
+                requestList.setAdapter(new RequestListAdapter(getApplicationContext(), R.layout.listview_request_item, request_list));
             }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
