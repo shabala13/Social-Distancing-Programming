@@ -7,7 +7,7 @@ public class Request {
         this.time = time;
     };
 
-    String itemName;
-    String date;
-    String time;
+    public String itemName;
+    public String date;
+    public String time;
 }

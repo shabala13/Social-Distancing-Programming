@@ -246,7 +246,10 @@ public class MainActivity extends AppCompatActivity {
                                 User user = new User();
                                 user.level = "Bronze";
                                 user.points = 0;
-                                user.requests = null;
+                                user.requests = new HashMap<>();
+                                HashMap<String, String> emptyHashEntry = new HashMap<>();
+                                emptyHashEntry.put(" ", " ");
+                                user.requests.put(" ", emptyHashEntry);
 
                                 // this call adds the UID and the User POJO into the DB. by using
                                 // child().setValue(), it will create the child entry (the UID) if
