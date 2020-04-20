@@ -19,7 +19,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private String product;
+    private String title;
+    private Double lat;
+    private Double lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +33,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
         Intent i = getIntent();
-        product = i.getStringExtra("product");
+        title = i.getStringExtra("title");
+        lat =  Double.parseDouble(i.getStringExtra("lat"));
+        lon =  Double.parseDouble(i.getStringExtra("lon"));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -63,8 +68,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title(product));
+        LatLng sydney = new LatLng(lat, lon);
+        mMap.addMarker(new MarkerOptions().position(sydney).title(title));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(10));
     }

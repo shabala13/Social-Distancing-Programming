@@ -10,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ProductListAdapter extends ArrayAdapter<Product> {
+import com.squareup.picasso.Picasso;
+
+public class ProductListAdapter extends ArrayAdapter<ProductEntry> {
     private int resource;
     private LayoutInflater inflater;
     private Context context;
 
-    public ProductListAdapter(Context ctx, int resourceId, List<Product> objects) {
+    public ProductListAdapter(Context ctx, int resourceId, List<ProductEntry> objects) {
         super(ctx, resourceId, objects);
         resource = resourceId;
         inflater = LayoutInflater.from(ctx);
@@ -27,22 +29,15 @@ public class ProductListAdapter extends ArrayAdapter<Product> {
 
         // Connecting Views to Variables for editing
         convertView = (RelativeLayout) inflater.inflate(resource, null);
-        Product product = getItem(position);
-        TextView productName = (TextView) convertView.findViewById(R.id.productName);
+        ProductEntry product = getItem(position);
+        TextView productStore = (TextView) convertView.findViewById(R.id.productName);
         TextView productBrand = (TextView) convertView.findViewById(R.id.productBrand);
         ImageView productImage = (ImageView) convertView.findViewById(R.id.productImage);
 
-
-        // Getting reference image from Drawable section
-        // TODO: Figure out how to grab image from DB and set it to product image (Drawable?)
-        String image_name = product.getImage();
-        int imageResource = getContext().getResources().getIdentifier(image_name, "drawable", context.getPackageName());
-        Drawable image = getContext().getResources().getDrawable(imageResource);
+        Picasso.get().load(product.image).into(productImage);
 
         // Setting product listing Name, Brand, and Image
-        productName.setText(product.getName());
-        productBrand.setText(product.getBrand());
-        productImage.setImageDrawable(image);
+        productStore.setText(product.store);
 
         return convertView;
     }
