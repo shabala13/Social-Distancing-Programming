@@ -18,14 +18,10 @@ public class ProductPageActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Toilet Paper");
         TextView title = findViewById(R.id.title);
-        TextView price = findViewById(R.id.price);
-        TextView description = findViewById(R.id.description);
         Button soldButton = findViewById(R.id.mark_as_sold);
         Button mapButton = findViewById(R.id.view_on_map);
 
         title.setText("Toliet Paper");
-        price.setText("$100");
-        description.setText("Found in Publix");
 
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
