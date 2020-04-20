@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -69,8 +71,21 @@ public class HomePageActivity extends AppCompatActivity {
                 }
 
                 // Creates an adapter for the ListView and uses it to fill view with temp_result_list
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, top_result_list);
+                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, top_result_list);
                 top_search_view.setAdapter(adapter);
+
+                top_search_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String product_name = adapter.getItem(position);
+                        Intent intent = new Intent(getApplicationContext(), ResultPageActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("user", (Parcelable) firebaseUser);
+                        intent.putExtras(bundle);
+                        intent.putExtra("product_name", product_name);
+                        startActivity(intent);
+                    }
+                });
 
             }
 
