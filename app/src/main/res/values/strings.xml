@@ -23,5 +23,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_maps">Map</string>
     <string name="result_title_holder">[Product Goes Here]</string>
+    <string name="create_listing_page">Create Listing</string>
+    <string name="result_page">Results</string>
 
 </resources>

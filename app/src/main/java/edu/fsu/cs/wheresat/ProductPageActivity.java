@@ -3,11 +3,6 @@ package edu.fsu.cs.wheresat;
 import android.content.Intent;
 import android.os.Bundle;
 
-// TODO Uncomment
-// import com.google.android.gms.maps.GoogleMap;
-// import com.google.android.gms.maps.OnMapReadyCallback;
-// import com.google.android.gms.maps.SupportMapFragment;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -35,10 +30,9 @@ public class ProductPageActivity extends AppCompatActivity {
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-/*              TODO Uncomment
                 Intent i = new Intent(getBaseContext(), MapsActivity.class);
                 i.putExtra("product", "Toilet Paper");
-                startActivity(i); */
+                startActivity(i);
             }
         });
 

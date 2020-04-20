@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateListing">
+
+    <TextView
+        android:id="@+id/listingCreation"
+        android:textColor="#3F51B5"
+        android:layout_width="122dp"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="152dp"
+        android:layout_marginRight="152dp"
+        android:text="Create Listing"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/ProductView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listingCreation"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="25dp"
+        android:text="Product: "
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/ProductView"
+        android:layout_alignRight="@id/listingCreation"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="56dp"
+        android:text="Product Here"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/DescriptionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ProductView"
+        android:layout_alignLeft="@id/ProductView"
+        android:layout_marginTop="25dp"
+        android:text="Description:"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/product"
+        android:layout_alignBaseline="@id/DescriptionView"
+        android:layout_alignLeft="@id/product"
+        android:text="Description Here"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/PictureView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/DescriptionView"
+        android:layout_alignLeft="@id/DescriptionView"
+        android:layout_marginTop="25dp"
+        android:text="Picture:"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_alignLeft="@id/description"
+        android:layout_alignTop="@id/PictureView"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/StoreView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/PictureView"
+        android:layout_alignLeft="@id/PictureView"
+        android:layout_marginTop="100dp"
+        android:text="Store:"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/store"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/StoreView"
+        android:layout_alignLeft="@id/picture"
+        android:text="Store Here"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/LocationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/StoreView"
+        android:layout_alignLeft="@id/StoreView"
+        android:layout_marginTop="25dp"
+        android:text="Location:"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/store"
+        android:layout_alignBaseline="@id/LocationView"
+        android:layout_alignLeft="@id/store"
+        android:text="Location Here"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/location"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="121dp"
+        android:layout_marginLeft="121dp"
+        android:layout_marginTop="45dp"
+        android:background="#3F51B5"
+        android:shadowColor="#3F51B5"
+        android:text="Submit"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#3F51B5" />
+
+
+</RelativeLayout>
