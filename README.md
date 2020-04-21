@@ -14,7 +14,7 @@ Due to the current pandemic circumnavigating the globe, essential items such as 
 The where’s@ app is a user-driven product locating service that helps people in the community locate requested items in stores near them. Users who enter a store and see specific products can take a picture and upload a listing to the service. Users can then search for the item in where’s@ and find a list of the closest stores with that item in stock, as well as a picture of the item for verification.
 
 ## Requirements
-Something about the Google Play needing to be the proper version. 
+The phone this application runs on must have an up-to-date version of Google Play Services. For some emulators, the version of Google Play Services does not get updated, so the application might not run properly. The application will run properly when emulating the following phone types: Pixel 3a, Pixel 3, Pixel 2, Pixel, Nexus 5X, and Nexus 5.
 
 ## Usage
 ### Login
@@ -22,3 +22,6 @@ Our application requires a login, so either create a new account using the "Crea
 
 - Email: test@gmail.com
 - Password: password
+
+### Home Page
+The home page displays a search bar with the top ten most searched items. 
