@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,12 +29,12 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class HomePageActivity extends AppCompatActivity {
-    List<String> top_result_list = new ArrayList<>();
-
-    ListView top_search_view;
-    final String TAG = "HomePageActivity";
-    FirebaseUser firebaseUser;
-    DatabaseReference topItemsRef, topRef;
+    private List<String> top_result_list = new ArrayList<>();
+    private ListView top_search_view;
+    private final String TAG = "HomePageActivity.class";
+    private FirebaseUser firebaseUser;
+    private DatabaseReference topItemsRef, topRef;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +42,18 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         firebaseUser = getIntent().getExtras().getParcelable("user");
-
         top_search_view = (ListView) findViewById(R.id.top_searches);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        // get DB reference
+        // get DB reference to top ten searches
         topItemsRef = database.getReference("TOP10");
 
         topItemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                progressBar.setVisibility(View.VISIBLE);
                 // Firebase only allows us to directly serialize to a HashMap of Strings, so need to construct
                 // a new TreeMap with Integers after serialization
 
@@ -70,6 +72,7 @@ public class HomePageActivity extends AppCompatActivity {
                     top_result_list.add(Utilities.toLowerCase(entry.getValue()));
                 }
 
+                progressBar.setVisibility(View.INVISIBLE);
                 // Creates an adapter for the ListView and uses it to fill view with temp_result_list
                 final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, top_result_list);
                 top_search_view.setAdapter(adapter);
@@ -77,6 +80,8 @@ public class HomePageActivity extends AppCompatActivity {
                 top_search_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        top_search_view.setVisibility(View.INVISIBLE);
+
                         String product_name = adapter.getItem(position);
                         Intent intent = new Intent(getApplicationContext(), ResultPageActivity.class);
                         Bundle bundle = new Bundle();
@@ -84,15 +89,14 @@ public class HomePageActivity extends AppCompatActivity {
                         intent.putExtras(bundle);
                         intent.putExtra("product_name", product_name);
                         startActivity(intent);
+
                     }
                 });
 
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
     }
 
@@ -109,31 +113,14 @@ public class HomePageActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         Bundle bundle;
 
+        // opens user profile page
         switch (item.getItemId()) {
-            case R.id.product_page_selection:
-                Intent product_page_intent = new Intent(this, ProductPageActivity.class);
-
-                bundle = new Bundle();
-                bundle.putParcelable("user", (Parcelable) firebaseUser);
-                product_page_intent.putExtras(bundle);
-
-                startActivity(product_page_intent);
-                break;
-
             case R.id.profile_page_selection:
                 Intent profile_page_selection = new Intent(this, ProfileActivity.class);
                 bundle = new Bundle();
                 bundle.putParcelable("user", (Parcelable) firebaseUser);
                 profile_page_selection.putExtras(bundle);
                 startActivity(profile_page_selection);
-                break;
-
-            case R.id.search_result_list:
-                // TODO: Bundle search into transfer to new search result
-
-                // TODO uncomment
-//                Intent new_search = new Intent(this, ResultPageActivity.class);
-//                startActivity(new_search);
                 break;
 
             case R.id.close_selection:

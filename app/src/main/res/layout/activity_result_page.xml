@@ -5,19 +5,28 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <ImageButton
+        android:id="@+id/back_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/return_home"
+        android:tint="#454040" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp">
 
-        <ImageButton
-            android:id="@+id/back_image_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:tint="#454040"
-            android:layout_marginStart="16dp"
-            android:contentDescription="@string/return_home" />
+        <ListView
+            android:id="@+id/product_entry_list"
+            android:layout_width="match_parent"
+            android:layout_height="575dp"
+            android:layout_marginTop="35dp"
+            android:paddingTop="5dp"></ListView>
 
         <TextView
             android:id="@+id/searched_product"
@@ -28,15 +37,19 @@
             android:textColor="#008000"
             android:textSize="25sp" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addEntryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/product_entry_list"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:clickable="true"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
     </RelativeLayout>
-
-    <ListView
-        android:id="@+id/product_entry_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingTop="5dp" >
-    </ListView>
-
 
 
 </LinearLayout>

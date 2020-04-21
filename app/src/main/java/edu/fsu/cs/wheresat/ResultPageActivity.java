@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +32,7 @@ public class ResultPageActivity extends Activity {
     ImageButton back_button;
     TextView product_name;
     FirebaseUser firebaseUser;
+    FloatingActionButton addEntry;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,18 @@ public class ResultPageActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_page);
         product_name = (TextView) findViewById(R.id.searched_product);
+
+        addEntry = (FloatingActionButton) findViewById(R.id.addEntryButton);
+        addEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent create_listing = new Intent(getApplicationContext(), CreateListing.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("productName", product_name.getText().toString());
+                create_listing.putExtras(bundle);
+                startActivity(create_listing);
+            }
+        });
 
         final String product_name_str = getIntent().getStringExtra("product_name");
         firebaseUser = getIntent().getExtras().getParcelable("user");
