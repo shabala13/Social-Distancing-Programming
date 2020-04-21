@@ -24,4 +24,9 @@ Our application requires a login, so either create a new account using the "Crea
 - Password: password
 
 ### Home Page
-The home page displays a search bar with the top ten most searched items. 
+The home page displays a search bar with the top ten most searched items underneath it. From this page, the user can navigate to their profile page (by using the menu bar), create a new search, or search an existing product. If the user clicks on an item on the top ten most searched items list, it will take them to the product page for that item. 
+
+**NEED MORE DETAIL HERE**
+
+### Profile Page
+Lists the users previously searched items and lists their points and rankings.
