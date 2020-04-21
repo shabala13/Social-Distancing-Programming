@@ -1,6 +1,6 @@
 # where's@
 
-## Group Memebers
+## Group Members
 - Kyle Peiman
 - Kaedon Hamm
 - Joseph Zilonka
