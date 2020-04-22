@@ -1,55 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
-
-    <ImageButton
-        android:id="@+id/back_image_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/return_home"
-        android:tint="#454040" />
-
-    <RelativeLayout
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        xmlns:app="http://schemas.android.com/apk/res-auto" >
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp">
+        android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/product_entry_list"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="575dp"
-            android:layout_marginTop="35dp"
-            android:paddingTop="5dp"></ListView>
-
-        <TextView
-            android:id="@+id/searched_product"
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/result_title_holder"
-            android:textColor="#008000"
-            android:textSize="25sp" />
+            android:orientation="vertical" >
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addEntryButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/product_entry_list"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="5dp"
-            android:clickable="true"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            <ImageButton
+                android:id="@+id/back_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/return_home"
+                android:tint="#454040" />
 
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp">
 
+                <ListView
+                    android:id="@+id/product_entry_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="575dp"
+                    android:layout_marginTop="35dp"
+                    android:paddingTop="5dp"></ListView>
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/searched_product"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/result_title_holder"
+                    android:textColor="#008000"
+                    android:textSize="25sp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/addEntryButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/product_entry_list"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:clickable="true"
+                    app:srcCompat="@android:drawable/ic_input_add" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>

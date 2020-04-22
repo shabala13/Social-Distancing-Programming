@@ -82,10 +82,10 @@ public class ResultPageActivity extends Activity {
 
                 List<ProductEntry> productEntryList = new ArrayList<ProductEntry>();
                 for (ProductEntry productEntry : productEntryHashMap.values())
-                    productEntryList.add(productEntry);
+                        productEntryList.add(productEntry);
 
                 listViewProduct = (ListView) findViewById(R.id.product_entry_list);
-                listViewProduct.setAdapter( new ProductListAdapter(getApplicationContext(), R.layout.single_result, productEntryList));
+                listViewProduct.setAdapter(new ProductListAdapter(getApplicationContext(), R.layout.single_result, productEntryList));
 
                 // Click event for single list row
                 listViewProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {

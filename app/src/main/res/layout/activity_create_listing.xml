@@ -36,7 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/listingCreation"
-        android:layout_alignBaseline="@id/ProductView"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="0dp"
@@ -87,7 +86,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="121dp"
         android:layout_marginLeft="121dp"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="191dp"
         android:background="#3F51B5"
         android:shadowColor="#3F51B5"
         android:text="Submit"
@@ -123,6 +122,26 @@
         android:textAllCaps="true"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#3F51B5" />
+
+    <TextView
+        android:id="@+id/latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/getLocationButton"
+        android:layout_alignLeft="@id/getLocationButton"
+        android:layout_marginTop="20dp"
+        android:text="Latitude: "
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/latitude"
+        android:layout_alignLeft="@id/getLocationButton"
+        android:layout_marginTop="20dp"
+        android:text="Longitude: "
+        android:textSize="16sp" />
 
 
 </RelativeLayout>

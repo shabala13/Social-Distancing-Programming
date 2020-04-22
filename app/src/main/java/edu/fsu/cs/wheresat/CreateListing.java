@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,6 +43,7 @@ public class CreateListing extends AppCompatActivity {
     private Button getCurrentLoc, submit, takePicture;
     private Location location;
     private EditText store;
+    private TextView latitudeTextView, longitudeTextView;
     private byte[] byteArray;
 
     @Override
@@ -57,6 +59,8 @@ public class CreateListing extends AppCompatActivity {
         store = (EditText) findViewById(R.id.store);
         imageView = (ImageView) findViewById(R.id.picture);
         takePicture = (Button) findViewById(R.id.openCamera);
+        latitudeTextView = (TextView) findViewById(R.id.latitude);
+        longitudeTextView = (TextView) findViewById(R.id.longitude);
 
         // requests camera permissions if they are not already given
         if(ContextCompat.checkSelfPermission(CreateListing.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
@@ -78,6 +82,12 @@ public class CreateListing extends AppCompatActivity {
                     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                     location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+                    String latitude = "Latitude: " + Double.toString(location.getLatitude());
+                    String longitude = "Longitude: " + Double.toString(location.getLongitude());
+
+
+                    latitudeTextView.setText(latitude);
+                    longitudeTextView.setText(longitude);
                 }
             }
         });
@@ -93,8 +103,7 @@ public class CreateListing extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please enter a store name to proceed.", Toast.LENGTH_SHORT).show();
                 }
                 upload(byteArray);
-                Intent home_intent = new Intent(CreateListing.this, HomePageActivity.class);
-                startActivity(home_intent);
+                finish();
             }
         });
 
