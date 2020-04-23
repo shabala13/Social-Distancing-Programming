@@ -1,7 +1,6 @@
 package edu.fsu.cs.wheresat;
 import java.util.List;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
