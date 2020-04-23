@@ -79,28 +79,43 @@ public class ResultPageActivity extends Activity {
                 // get HashMap from DB
                 GenericTypeIndicator<HashMap<String, ProductEntry>> genericTypeIndicator = new GenericTypeIndicator<HashMap<String, ProductEntry>>() {};
                 HashMap<String, ProductEntry> productEntryHashMap = dataSnapshot.getValue(genericTypeIndicator);
-
                 List<ProductEntry> productEntryList = new ArrayList<ProductEntry>();
-                for (ProductEntry productEntry : productEntryHashMap.values())
+                listViewProduct = (ListView) findViewById(R.id.product_entry_list);
+
+                if(productEntryHashMap != null) {
+
+                    for (ProductEntry productEntry : productEntryHashMap.values())
                         productEntryList.add(productEntry);
 
-                listViewProduct = (ListView) findViewById(R.id.product_entry_list);
-                listViewProduct.setAdapter(new ProductListAdapter(getApplicationContext(), R.layout.single_result, productEntryList));
 
-                // Click event for single list row
-                listViewProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        ProductEntry o = (ProductEntry) parent.getItemAtPosition(position);
-                        Intent send_to_product = new Intent(getApplicationContext(), ProductPageActivity.class);
-                        send_to_product.putExtra("store", o.store);
-                        send_to_product.putExtra("image_url", o.image);
-                        send_to_product.putExtra("lat", o.lat);
-                        send_to_product.putExtra("lon", o.lon);
-                        send_to_product.putExtra("title", product_name_str);
-                        startActivity(send_to_product);
-                    }
-                });
+                    listViewProduct.setAdapter(new ProductListAdapter(getApplicationContext(), R.layout.single_result, productEntryList));
+
+                    // Click event for single list row
+                    listViewProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            ProductEntry o = (ProductEntry) parent.getItemAtPosition(position);
+                            Intent send_to_product = new Intent(getApplicationContext(), ProductPageActivity.class);
+                            send_to_product.putExtra("store", o.store);
+                            send_to_product.putExtra("image_url", o.image);
+                            send_to_product.putExtra("lat", o.lat);
+                            send_to_product.putExtra("lon", o.lon);
+                            send_to_product.putExtra("title", product_name_str);
+                            startActivity(send_to_product);
+                        }
+                    });
+
+                } else {
+                    ProductEntry empty = new ProductEntry();
+                    empty.store = "No results found.";
+                    empty.image = null;
+                    empty.lat = null;
+                    empty.lon = null;
+                    productEntryList.add(empty);
+
+                    listViewProduct.setAdapter(new ProductListAdapter(getApplicationContext(), R.layout.single_result, productEntryList));
+                }
+
 
             }
 
@@ -111,4 +126,14 @@ public class ResultPageActivity extends Activity {
             }
         });
         }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ResultPageActivity.this, HomePageActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user", firebaseUser);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        finish();
+    }
 }

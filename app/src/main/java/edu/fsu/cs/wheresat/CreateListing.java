@@ -151,7 +151,7 @@ public class CreateListing extends AppCompatActivity {
 
         // updates the DB if user doesn't upload picture
         if(byteArray == null) {
-            product.image = "";
+            product.image = "https://firebasestorage.googleapis.com/v0/b/where-sat.appspot.com/o/default_image.jpg?alt=media&token=d03a93f3-7694-4cca-b7e1-b6167e410eb7";
             entryRef.child(key).setValue(product);
         } else {
             UploadTask uploadTask = (UploadTask) storageRef.child(key).putBytes(byteArray)
