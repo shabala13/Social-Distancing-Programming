@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -36,6 +39,7 @@ public class HomePageActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private DatabaseReference topItemsRef, topRef;
     private ProgressBar progressBar;
+    private EditText search_bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +49,42 @@ public class HomePageActivity extends AppCompatActivity {
         firebaseUser = getIntent().getExtras().getParcelable("user");
         top_search_view = (ListView) findViewById(R.id.top_searches);
         progressBar = (ProgressBar) findViewById(R.id.progressTopTen);
+        search_bar = (EditText) findViewById(R.id.search_bar);
+
+        // Set Enter Key Listener for Search Bar
+        search_bar.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                EditText s_bar = (EditText) findViewById(R.id.search_bar);
+
+                if (keyCode == EditorInfo.IME_ACTION_SEARCH ||
+                        keyCode == EditorInfo.IME_ACTION_DONE ||
+                        event.getAction() == KeyEvent.ACTION_DOWN &&
+                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+                    if (!event.isShiftPressed()) {
+                        if (view.getId() == R.id.search_bar) {
+                            String product_name = s_bar.getText().toString();
+                            Intent intent = new Intent(getApplicationContext(), ResultPageActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("user", (Parcelable) firebaseUser);
+                            intent.putExtras(bundle);
+                            intent.putExtra("product_name", product_name);
+                            startActivity(intent);
+                            return true;
+                        }
+                    }
+                }
+                Log.i("KEY", "Returning false.");
+                return false; // pass on to other listeners.
+
+            }
+        });
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // get DB reference to top ten searches
         topItemsRef = database.getReference("TOP10");
-
         topItemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -101,6 +135,7 @@ public class HomePageActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
     }
+
 
     // Creates the hamburger menu, uses the res/menu/menu.xml setup
     @Override
