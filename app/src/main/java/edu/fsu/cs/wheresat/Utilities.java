@@ -5,7 +5,7 @@ public class Utilities {
 
         reference = reference.toLowerCase();
 
-        reference.replace('_', ' ');
+        reference = reference.replace('_', ' ');
 
         return reference;
     }
@@ -13,7 +13,7 @@ public class Utilities {
     public static String toUpperCase(String reference) {
         reference = reference.toUpperCase();
 
-        reference.replace(' ', '_');
+        reference = reference.replace(' ', '_');
 
         return reference;
     }

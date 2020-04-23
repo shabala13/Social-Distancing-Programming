@@ -3,6 +3,7 @@ package edu.fsu.cs.wheresat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -22,6 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView requestList;
     private ArrayAdapter<String> requestListAdapter;
     private Button login, createAcct;
+    private ProgressBar loginProgress;
 
     DatabaseReference dataRef, itemref;
     private Uri uri;
@@ -87,14 +90,17 @@ public class MainActivity extends AppCompatActivity {
 
         email = findViewById(R.id.username);
         pass = findViewById(R.id.password);
-        //requestList = findViewById(R.id.requestList);
         login = findViewById(R.id.loginButton);
         createAcct = findViewById(R.id.create_acct);
+        loginProgress = findViewById(R.id.progressLogin);
+        loginProgress.setVisibility(View.GONE);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loginProgress.setVisibility(View.VISIBLE);
                 loginUser(view);
+                loginProgress.setVisibility(View.INVISIBLE);
             }
         });
 

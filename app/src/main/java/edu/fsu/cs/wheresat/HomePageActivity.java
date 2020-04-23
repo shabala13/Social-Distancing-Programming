@@ -43,7 +43,7 @@ public class HomePageActivity extends AppCompatActivity {
 
         firebaseUser = getIntent().getExtras().getParcelable("user");
         top_search_view = (ListView) findViewById(R.id.top_searches);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progressTopTen);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -54,6 +54,7 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 progressBar.setVisibility(View.VISIBLE);
+                progressBar.bringToFront();
                 // Firebase only allows us to directly serialize to a HashMap of Strings, so need to construct
                 // a new TreeMap with Integers after serialization
 
