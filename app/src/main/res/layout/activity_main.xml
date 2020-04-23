@@ -4,7 +4,27 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".MainActivity">
+tools:context=".MainActivity"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="where's"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="40sp" />
+    <TextView
+        android:id="@+id/appNameAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/appName"
+        android:layout_marginTop="30dp"
+        android:text="\@"
+        android:textColor="@color/colorAccent"
+        android:textSize="40sp" />
 
     <EditText
         android:id="@+id/username"
@@ -17,7 +37,11 @@ tools:context=".MainActivity">
         android:layout_marginTop="100dp"
         android:ems="10"
         android:hint="Email"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#3F51B5"
+        android:textColorHint="@color/colorPrimaryDark"
+        />
 
     <EditText
         android:id="@+id/password"
@@ -28,54 +52,43 @@ tools:context=".MainActivity">
         android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#3F51B5"
+        android:textColorHint="@color/colorPrimaryDark" />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/password"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="92dp"
         android:layout_marginLeft="92dp"
         android:layout_marginTop="44dp"
-        android:background="#3F51B5"
-        android:shadowColor="#3F51B5"
+        android:background="@color/colorPrimaryDark"
+        android:shadowColor="@color/colorPrimaryDark"
         android:text="login"
         android:textAllCaps="true"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorPrimary"
         android:textColorHighlight="#3F51B5" />
-
-    <TextView
-        android:id="@+id/appName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text="where's@"
-        android:textColor="#3F51B5"
-        android:textSize="40sp" />
 
     <Button
         android:id="@+id/create_acct"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/password"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_below="@+id/loginButton"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
         android:layout_marginTop="45dp"
         android:layout_marginEnd="92dp"
         android:layout_marginRight="92dp"
-        android:layout_toEndOf="@+id/loginButton"
-        android:layout_toRightOf="@+id/loginButton"
-        android:background="#3F51B5"
-        android:shadowColor="#3F51B5"
+        android:background="@color/colorAccent"
+        android:shadowColor="@color/colorAccent"
         android:text="Create Account"
         android:textAllCaps="true"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorPrimary"
         android:textColorHighlight="#3F51B5" />
 
     <ProgressBar

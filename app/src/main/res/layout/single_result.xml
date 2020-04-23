@@ -3,8 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dip" >
-
+    android:padding="5dip"
+    android:background="@color/colorPrimary" >
     <!--  ListRow Left side Thumbnail image -->
     <LinearLayout android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
@@ -15,7 +15,8 @@
         <ImageView
             android:id="@+id/productImage"
             android:layout_width="50dip"
-            android:layout_height="50dip"/>
+            android:layout_height="50dip"
+            android:background="@drawable/thumbnail_background"/>
     </LinearLayout>
 
     <TextView
@@ -23,21 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="19dp"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Toilet Paper"
-        android:textColor="#040404"
-        android:typeface="sans"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="15dip"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/productBrand"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/productName"
-        android:textColor="#343434"
-        android:textSize="10dip"
-        android:layout_marginTop="1dip"
-        android:layout_toRightOf="@+id/thumbnail"/>
-
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:layout_centerVertical="true" />
 </RelativeLayout>

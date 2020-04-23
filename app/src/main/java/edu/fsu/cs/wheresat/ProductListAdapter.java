@@ -31,7 +31,6 @@ public class ProductListAdapter extends ArrayAdapter<ProductEntry> {
         convertView = (RelativeLayout) inflater.inflate(resource, null);
         ProductEntry product = getItem(position);
         TextView productStore = (TextView) convertView.findViewById(R.id.productName);
-        TextView productBrand = (TextView) convertView.findViewById(R.id.productBrand);
         ImageView productImage = (ImageView) convertView.findViewById(R.id.productImage);
 
         Picasso.get().load(product.image).into(productImage);

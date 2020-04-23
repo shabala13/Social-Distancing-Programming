@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomePageActivity">
+    tools:context=".HomePageActivity"
+    android:background="@color/colorPrimary" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,7 +22,9 @@
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/colorPrimaryDark"/>
 
         <ListView
             android:id="@+id/top_searches"
@@ -44,7 +47,8 @@
             app:layout_constraintBottom_toTopOf="@+id/top_searches"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_bar" />
+            app:layout_constraintTop_toBottomOf="@+id/search_bar"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <ProgressBar
             android:id="@+id/progressTopTen"

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/colorPrimary">
 
 
     <ScrollView
@@ -54,14 +55,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mark As Sold"
-                        android:layout_marginTop="20dp"/>
+                        android:layout_marginTop="20dp"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/colorPrimary" />
 
                     <Button
                         android:id="@+id/view_on_map"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="View On Map"
-                        android:layout_marginTop="20dp"/>
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/colorPrimary" />
                 </LinearLayout>
             </LinearLayout>
 

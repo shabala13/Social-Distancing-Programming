@@ -37,7 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
-public class CreateListing extends AppCompatActivity {
+public class CreateListing extends Activity {
     private ImageView imageView;
     private String productName;
     private Button getCurrentLoc, submit, takePicture;

@@ -47,7 +47,7 @@ import java.util.HashMap;
 Test UI to demonstrate Firebase operations for login and account creation
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private String TAG = "MainActivity";
 
