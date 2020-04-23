@@ -1,13 +1,13 @@
 package edu.fsu.cs.wheresat;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -42,12 +42,13 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
+import java.util.concurrent.Callable;
 
 /*
 Test UI to demonstrate Firebase operations for login and account creation
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements Callable<Void> {
     private static final int PICK_IMAGE_REQUEST = 1;
     private String TAG = "MainActivity";
 
@@ -78,6 +79,8 @@ public class MainActivity extends Activity {
     AutoCompleteTextView dialogPassEditText;
     AutoCompleteTextView dialogConfirmPassEditText;
 
+    View tempView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,17 +93,20 @@ public class MainActivity extends Activity {
 
         email = findViewById(R.id.username);
         pass = findViewById(R.id.password);
+
+        email.setTypeface(Typeface.MONOSPACE);
+        pass.setTypeface(Typeface.MONOSPACE);
+
         login = findViewById(R.id.loginButton);
         createAcct = findViewById(R.id.create_acct);
         loginProgress = findViewById(R.id.progressLogin);
-        loginProgress.setVisibility(View.GONE);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginProgress.setVisibility(View.VISIBLE);
-                loginUser(view);
-                loginProgress.setVisibility(View.INVISIBLE);
+                AsyncTaskRunner runner = new AsyncTaskRunner(loginProgress, MainActivity.this);
+                tempView = view;
+                runner.execute();
             }
         });
 
@@ -181,6 +187,10 @@ public class MainActivity extends Activity {
         if(email.getText().toString().equals("") || pass.getText().toString().equals("")) {
             showToast("Please enter a valid username and password.");
         } else {
+
+
+
+
             // login is not synchronous (i.e. it does not happen instantly). if you need to access data
             // immediately after login, do that in the onComplete() function below and not elsewhere
             firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), pass.getText().toString())
@@ -357,5 +367,12 @@ public class MainActivity extends Activity {
             return false;
 
         return dialogConfirmPassEditText.getText().toString().equals(dialogPassEditText.getText().toString());
+    }
+
+    @Override
+    public Void call()
+    {
+        loginUser(tempView);
+        return null;
     }
 }

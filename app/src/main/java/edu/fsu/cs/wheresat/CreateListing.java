@@ -98,12 +98,14 @@ public class CreateListing extends Activity {
             public void onClick(View view) {
                 if(location == null) {
                     Toast.makeText(getApplicationContext(), "Please add your current location to proceed.", Toast.LENGTH_SHORT).show();
-                    return;
                 } else if (store.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter a store name to proceed.", Toast.LENGTH_SHORT).show();
                 }
-                upload(byteArray);
-                finish();
+                else
+                {
+                    upload(byteArray);
+                    finish();
+                }
             }
         });
 

@@ -33,7 +33,7 @@ public class ProductPageActivity extends AppCompatActivity {
         ImageView image = findViewById(R.id.product_image);
 
         title.setText(p_title);
-        Picasso.get().load(image_url).into(image);
+        Picasso.get().load(image_url).rotate(90).into(image);
 
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override

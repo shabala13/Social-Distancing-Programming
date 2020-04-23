@@ -31,8 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.concurrent.Callable;
 
-public class HomePageActivity extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity implements Callable<Void> {
     private List<String> top_result_list = new ArrayList<>();
     private ListView top_search_view;
     private final String TAG = "HomePageActivity.class";
@@ -40,6 +41,7 @@ public class HomePageActivity extends AppCompatActivity {
     private DatabaseReference topItemsRef, topRef;
     private ProgressBar progressBar;
     private EditText search_bar;
+    View tempView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,43 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
+        AsyncTaskRunner runner = new AsyncTaskRunner(progressBar, this);
+        runner.execute("String");
+    }
+
+
+    // Creates the hamburger menu, uses the res/menu/menu.xml setup
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    // Manages the selection of the menu items
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        Bundle bundle;
+
+        // opens user profile page
+        switch (item.getItemId()) {
+            case R.id.profile_page_selection:
+                Intent profile_page_selection = new Intent(this, ProfileActivity.class);
+                bundle = new Bundle();
+                bundle.putParcelable("user", (Parcelable) firebaseUser);
+                profile_page_selection.putExtras(bundle);
+                startActivity(profile_page_selection);
+                break;
+
+            case R.id.close_selection:
+                finish();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public Void call()
+    {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // get DB reference to top ten searches
@@ -134,35 +173,7 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-    }
 
-
-    // Creates the hamburger menu, uses the res/menu/menu.xml setup
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    // Manages the selection of the menu items
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        Bundle bundle;
-
-        // opens user profile page
-        switch (item.getItemId()) {
-            case R.id.profile_page_selection:
-                Intent profile_page_selection = new Intent(this, ProfileActivity.class);
-                bundle = new Bundle();
-                bundle.putParcelable("user", (Parcelable) firebaseUser);
-                profile_page_selection.putExtras(bundle);
-                startActivity(profile_page_selection);
-                break;
-
-            case R.id.close_selection:
-                finish();
-                break;
-        }
-        return true;
+        return null;
     }
 }

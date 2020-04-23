@@ -3,20 +3,19 @@ package edu.fsu.cs.wheresat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
-import android.renderscript.Sampler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-public class ResultPageActivity extends Activity {
+public class ResultPageActivity extends AppCompatActivity implements Callable<Void> {
     ListView listViewProduct;
     Context ctx;
     ImageButton back_button;
@@ -60,12 +59,16 @@ public class ResultPageActivity extends Activity {
         product_name.setText(product_name_str);
 
         // Setting up Back Button
-        back_button = (ImageButton) findViewById(R.id.back_image_button);
+        back_button = (ImageButton) findViewById(R.id.back_image_button_1);
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent return_home = new Intent(getApplicationContext(), HomePageActivity.class);
-                startActivity(return_home);
+                Intent intent = new Intent(ResultPageActivity.this, HomePageActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("user", firebaseUser);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -156,5 +159,12 @@ public class ResultPageActivity extends Activity {
         intent.putExtras(bundle);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public Void call()
+    {
+
+        return null;
     }
 }

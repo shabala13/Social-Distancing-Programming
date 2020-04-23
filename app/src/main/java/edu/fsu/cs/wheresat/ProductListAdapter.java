@@ -32,7 +32,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductEntry> {
         TextView productStore = (TextView) convertView.findViewById(R.id.productName);
         ImageView productImage = (ImageView) convertView.findViewById(R.id.productImage);
 
-        Picasso.get().load(product.image).into(productImage);
+        Picasso.get().load(product.image).rotate(90).into(productImage);
 
         // Setting product listing Name, Brand, and Image
         productStore.setText(product.store);
