@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.renderscript.Sampler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -70,7 +71,27 @@ public class ResultPageActivity extends Activity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        // get DB reference
+        // gets DB reference to Item
+        final DatabaseReference itemReference = database.getReference("Item").child(Utilities.toUpperCase(product_name_str)).child("searchCount");
+        itemReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int updatedSearchCount;
+
+                if(dataSnapshot.getValue(Integer.class) == null)
+                    updatedSearchCount = 1;
+                else
+                    updatedSearchCount = dataSnapshot.getValue(Integer.class) + 1;
+                
+                itemReference.setValue(updatedSearchCount);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+
+        // get DB reference to product entries
         DatabaseReference itemsRef = database.getReference("Item").child(Utilities.toUpperCase(product_name_str)).child("entries");
 
         itemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
