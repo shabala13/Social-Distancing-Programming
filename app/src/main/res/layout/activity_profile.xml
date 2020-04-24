@@ -97,18 +97,14 @@
         android:textSize="30sp"
         android:textColor="@color/colorPrimaryDark" />
 
-    <ScrollView
-        android:id="@+id/scroller"
+    <ListView
+        android:id="@+id/requestList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/requests"
-        android:layout_marginTop="59dp">
-
-        <ListView
-            android:id="@+id/requestList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+        android:layout_height="400dp"
+        android:layout_below="@id/requestName"
+        android:layout_marginTop="30dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="20.0dp" />
 
     <ImageButton
         android:id="@+id/back_image_button"
@@ -135,8 +131,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/requests"
-        android:layout_marginStart="72dp"
-        android:layout_marginLeft="72dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginLeft="76dp"
         android:layout_marginTop="19dp"
         android:layout_toEndOf="@+id/requestName"
         android:layout_toRightOf="@+id/requestName"

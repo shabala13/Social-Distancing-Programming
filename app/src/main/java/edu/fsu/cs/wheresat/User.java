@@ -8,6 +8,8 @@ User needs to have a public default constructor to be serialized (loaded from DB
 to DB). Also, all fields must be public or have getters and setters to be serialized.
  */
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ public class User {
     public String points;
     public HashMap<String, HashMap<String, String>> requests;
 
+    @Exclude
     public List<Request> getRequestList()
     {
         List<Request> list = new ArrayList<>();
