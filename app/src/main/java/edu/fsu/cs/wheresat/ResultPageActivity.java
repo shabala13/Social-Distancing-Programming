@@ -53,6 +53,7 @@ public class ResultPageActivity extends AppCompatActivity implements Callable<Vo
         firebaseUser = getIntent().getExtras().getParcelable("user");
 
         addEntry = (FloatingActionButton) findViewById(R.id.addEntryButton);
+        addEntry.bringToFront();
         addEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -106,29 +106,30 @@
         android:layout_below="@id/PictureView"
         android:layout_alignLeft="@id/PictureView"
         android:layout_marginTop="25dp"
-        android:text="take a picture"
-        android:textSize="10sp"
         android:background="@color/colorAccent"
         android:shadowColor="@color/colorAccent"
+        android:text="TAKE A PICTURE"
         android:textColor="@color/colorPrimary"
-        android:textColorHighlight="#3F51B5"/>
+        android:textColorHighlight="#3F51B5"
+        android:textSize="10sp" />
 
     <Button
         android:id="@+id/getLocationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/store"
+        android:layout_centerInParent="true"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="26dp"
         android:layout_toEndOf="@+id/LocationView"
         android:layout_toRightOf="@+id/LocationView"
-        android:text="Get Current Location"
-        android:textAllCaps="true"
         android:background="@color/colorAccent"
         android:shadowColor="@color/colorAccent"
+        android:text="Get Current Location"
+        android:textAllCaps="true"
         android:textColor="@color/colorPrimary"
-        android:textColorHighlight="#3F51B5" />
+        android:textColorHighlight="#3F51B5"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/latitude"
