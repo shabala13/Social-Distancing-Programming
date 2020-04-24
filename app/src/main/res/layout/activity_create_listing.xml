@@ -1,157 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateListing"
-    android:background="@color/colorPrimary">
+    android:fillViewport="true"
+    android:background="@color/colorPrimary"
+    tools:context=".CreateListing">
 
-    <TextView
-        android:id="@+id/listingCreation"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_width="122dp"
-        android:layout_height="35dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="152dp"
-        android:layout_marginRight="152dp"
-        android:text="Create Listing"
-        android:textSize="30sp" />
-
-    <TextView
-        android:id="@+id/PictureView"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listingCreation"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="13dp"
-        android:text="Picture:"
-        android:textSize="20sp"
-        android:textColor="@color/colorPrimaryDark" />
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listingCreation"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="104dp"
-        android:layout_marginRight="104dp"
-        app:srcCompat="@drawable/ic_launcher_foreground"
-        tools:ignore="VectorDrawableCompat" />
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/getLocationButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="121dp"
+            android:layout_marginLeft="121dp"
+            android:layout_marginTop="191dp"
+            android:background="@color/colorAccent"
+            android:shadowColor="@color/colorAccent"
+            android:text="Submit"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHighlight="#3F51B5" />
 
-    <TextView
-        android:id="@+id/StoreView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/PictureView"
-        android:layout_alignLeft="@id/PictureView"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="150dp"
-        android:text="Store:"
-        android:textSize="20sp"
-        android:textColor="@color/colorPrimaryDark" />
+        <Button
+            android:id="@+id/openCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/PictureView"
+            android:layout_alignLeft="@id/PictureView"
+            android:layout_marginTop="25dp"
+            android:background="@color/colorAccent"
+            android:shadowColor="@color/colorAccent"
+            android:text="TAKE A PICTURE"
+            android:textColor="@color/colorPrimary"
+            android:textColorHighlight="#3F51B5"
+            android:textSize="10sp" />
 
-    <EditText
-        android:id="@+id/store"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/picture"
-        android:layout_alignBaseline="@id/StoreView"
-        android:layout_toRightOf="@+id/StoreView"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="63dp"
-        android:hint="Store Name"
-        android:textSize="20sp" />
+        <Button
+            android:id="@+id/getLocationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="26dp"
+            android:layout_toEndOf="@+id/LocationView"
+            android:layout_toRightOf="@+id/LocationView"
+            android:background="@color/colorAccent"
+            android:shadowColor="@color/colorAccent"
+            android:text="Get Current Location"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHighlight="#3F51B5"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/LocationView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/StoreView"
-        android:layout_alignLeft="@id/StoreView"
-        android:layout_marginLeft="-2dp"
-        android:layout_marginTop="46dp"
-        android:text="Location:"
-        android:textSize="20sp"
-        android:textColor="@color/colorPrimaryDark" />
+        <EditText
+            android:id="@+id/store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/picture"
+            android:layout_alignBaseline="@id/StoreView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="63dp"
+            android:layout_toRightOf="@+id/StoreView"
+            android:hint="Store Name"
+            android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/getLocationButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="121dp"
-        android:layout_marginLeft="121dp"
-        android:layout_marginTop="191dp"
-        android:text="Submit"
-        android:textAllCaps="true"
-        android:background="@color/colorAccent"
-        android:shadowColor="@color/colorAccent"
-        android:textColor="@color/colorPrimary"
-        android:textColorHighlight="#3F51B5"/>
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listingCreation"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="104dp"
+            android:layout_marginRight="104dp"
+            app:srcCompat="@drawable/ic_launcher_foreground"
+            tools:ignore="VectorDrawableCompat" />
 
-    <Button
-        android:id="@+id/openCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/PictureView"
-        android:layout_alignLeft="@id/PictureView"
-        android:layout_marginTop="25dp"
-        android:background="@color/colorAccent"
-        android:shadowColor="@color/colorAccent"
-        android:text="TAKE A PICTURE"
-        android:textColor="@color/colorPrimary"
-        android:textColorHighlight="#3F51B5"
-        android:textSize="10sp" />
+        <TextView
+            android:id="@+id/listingCreation"
+            android:layout_width="122dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="152dp"
+            android:layout_marginRight="152dp"
+            android:text="Create Listing"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="30sp" />
 
-    <Button
-        android:id="@+id/getLocationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="26dp"
-        android:layout_toEndOf="@+id/LocationView"
-        android:layout_toRightOf="@+id/LocationView"
-        android:background="@color/colorAccent"
-        android:shadowColor="@color/colorAccent"
-        android:text="Get Current Location"
-        android:textAllCaps="true"
-        android:textColor="@color/colorPrimary"
-        android:textColorHighlight="#3F51B5"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/PictureView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listingCreation"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="13dp"
+            android:text="Picture:"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/latitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/getLocationButton"
-        android:layout_alignLeft="@id/getLocationButton"
-        android:layout_marginTop="20dp"
-        android:text="Latitude: "
-        android:textSize="16sp"
-        android:textColor="@color/colorPrimaryDark" />
+        <TextView
+            android:id="@+id/StoreView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/PictureView"
+            android:layout_alignLeft="@id/PictureView"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="150dp"
+            android:text="Store:"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/longitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/latitude"
-        android:layout_alignLeft="@id/getLocationButton"
-        android:layout_marginTop="20dp"
-        android:text="Longitude: "
-        android:textSize="16sp"
-        android:textColor="@color/colorPrimaryDark" />
+        <TextView
+            android:id="@+id/LocationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/StoreView"
+            android:layout_alignLeft="@id/StoreView"
+            android:layout_marginLeft="-2dp"
+            android:layout_marginTop="46dp"
+            android:text="Location:"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/getLocationButton"
+            android:layout_alignLeft="@id/getLocationButton"
+            android:layout_marginTop="20dp"
+            android:text="Latitude: "
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/latitude"
+            android:layout_alignLeft="@id/getLocationButton"
+            android:layout_marginTop="20dp"
+            android:text="Longitude: "
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
 
 
-</RelativeLayout>
+</ScrollView>
