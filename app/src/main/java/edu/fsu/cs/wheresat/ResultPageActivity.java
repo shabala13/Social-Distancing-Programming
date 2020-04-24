@@ -46,7 +46,7 @@ public class ResultPageActivity extends AppCompatActivity implements Callable<Vo
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        Log.i("NERD", "ENtered Result Page Activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_page);
         product_name = (TextView) findViewById(R.id.searched_product);
@@ -202,11 +202,14 @@ public class ResultPageActivity extends AppCompatActivity implements Callable<Vo
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             ProductEntry o = (ProductEntry) parent.getItemAtPosition(position);
                             Intent send_to_product = new Intent(getApplicationContext(), ProductPageActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("user", firebaseUser);
                             send_to_product.putExtra("store", o.store);
                             send_to_product.putExtra("image_url", o.image);
                             send_to_product.putExtra("lat", o.lat);
                             send_to_product.putExtra("lon", o.lon);
                             send_to_product.putExtra("title", product_name_str);
+                            send_to_product.putExtras(bundle);
                             startActivity(send_to_product);
                         }
                     });

@@ -3,6 +3,7 @@ package edu.fsu.cs.wheresat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends Activity {
     TextView username, email, points, level;
     final String TAG = "ProfileActivity";
     ListView requestList;
