@@ -14,7 +14,7 @@ Due to the current pandemic circumnavigating the globe, essential items such as 
 The where’s@ app is a user-driven product locating service that helps people in the community locate requested items in stores near them. Users who enter a store and see specific products can take a picture and upload a listing to the service. Users can then search for the item in where’s@ and find a list of the closest stores with that item in stock, as well as a picture of the item for verification.
 
 ## Requirements
-The phone this application runs on must have an up-to-date version of Google Play Services. For some emulators, the version of Google Play Services does not get updated, so the application might not run properly. The application will run properly when emulating the following phone types: Pixel 3a, Pixel 3, Pixel 2, Pixel, Nexus 5X, and Nexus 5.
+The phone this application runs on must have an up-to-date version of Google Play Services. For some emulators, the pre-installed version of Google Play Services is out-of-date, so the application might not run properly. Also, for emulators, you need to grab the phone's location first using Google Maps before using our app so the location is set properly. For a demonstration of how to fix these issues, watch the video presentation we submitted. Note that these issues do not appear on actual Android devices: they are only present on emulators. The application will run properly when emulating the following phone types: Pixel 3a, Pixel 3, Pixel 2, Pixel, Nexus 5X, and Nexus 5. 
 
 ## Usage
 ### Login
