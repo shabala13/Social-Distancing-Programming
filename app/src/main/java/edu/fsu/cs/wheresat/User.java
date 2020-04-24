@@ -17,7 +17,7 @@ public class User {
     public User() {}
 
     public String level;
-    public long points;
+    public String points;
     public HashMap<String, HashMap<String, String>> requests;
 
     public List<Request> getRequestList()

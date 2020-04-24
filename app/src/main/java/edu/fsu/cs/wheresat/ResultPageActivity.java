@@ -3,13 +3,18 @@ package edu.fsu.cs.wheresat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.content.Context;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +22,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,6 +47,7 @@ public class ResultPageActivity extends AppCompatActivity implements Callable<Vo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_page);
         product_name = (TextView) findViewById(R.id.searched_product);
+        firebaseUser = getIntent().getExtras().getParcelable("user");
 
         addEntry = (FloatingActionButton) findViewById(R.id.addEntryButton);
         addEntry.setOnClickListener(new View.OnClickListener() {
@@ -48,13 +56,14 @@ public class ResultPageActivity extends AppCompatActivity implements Callable<Vo
                 Intent create_listing = new Intent(getApplicationContext(), CreateListing.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("productName", product_name.getText().toString());
+                bundle.putParcelable("user", (Parcelable) firebaseUser);
                 create_listing.putExtras(bundle);
                 startActivity(create_listing);
             }
         });
 
         final String product_name_str = getIntent().getStringExtra("product_name");
-        firebaseUser = getIntent().getExtras().getParcelable("user");
+
 
         product_name.setText(product_name_str);
 
@@ -79,7 +88,7 @@ public class ResultPageActivity extends AppCompatActivity implements Callable<Vo
         itemReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int updatedSearchCount;
+                final int updatedSearchCount;
 
                 if(dataSnapshot.getValue(Integer.class) == null)
                     updatedSearchCount = 1;
@@ -88,6 +97,75 @@ public class ResultPageActivity extends AppCompatActivity implements Callable<Vo
                 
                 itemReference.setValue(updatedSearchCount);
 
+                // get DB reference to top ten searches
+                final DatabaseReference topItemsRef = FirebaseDatabase.getInstance().getReference("TOP10");
+
+                topItemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        // Firebase only allows us to directly serialize to a HashMap of Strings, so need to construct
+                        // a new TreeMap with Integers after serialization
+
+                        // get HashMap from DB
+                        GenericTypeIndicator<HashMap<String, String>> genericTypeIndicator = new GenericTypeIndicator<HashMap<String, String>>() {};
+                        HashMap<String, String> topTenItemsString = dataSnapshot.getValue(genericTypeIndicator);
+
+                        // Build TreeMap in ascending order
+                        TreeMap<Integer, String> topTenItems = new TreeMap<>();
+
+                        for (HashMap.Entry entry : topTenItemsString.entrySet())
+                        {
+                            String[] newKey = entry.getKey().toString().split("[_]");
+                            topTenItems.put(Integer.parseInt(newKey[0]), (String) entry.getValue());
+                        }
+
+                        // if the searched entry is already in the top 10, see if it can be moved up or down
+                        // if there is a tie, the element just searched will be bumped up
+
+                        // used to signify whether the entry was found in the top 10 already
+                        boolean updated = false;
+
+                        NavigableMap<Integer, String> navigableMap = new TreeMap<>(topTenItems);
+
+                        for (Map.Entry<Integer, String> entry : navigableMap.entrySet()) {
+                            Map.Entry<Integer, String> next = navigableMap.higherEntry(entry.getKey());
+
+                            // if the current entry is the entry just searched and it's updated count is bigger
+                            // than or equal to the next entry, swap the two
+                            if (entry.getValue().equals(Utilities.toUpperCase(product_name_str)) &&
+                                next != null && updatedSearchCount >= next.getKey())
+                            {
+                                updated = true;
+                                topItemsRef.child(next.getKey().toString() + "_k").setValue(Utilities.toUpperCase(product_name_str));
+                                topItemsRef.child(entry.getKey().toString() + "_k").setValue(next.getValue());
+                                break;
+                            }
+
+                            // if the current entry was just updated but does not need to move positions, update
+                            // it's count
+                            else if (entry.getValue().equals(Utilities.toUpperCase(product_name_str)))
+                            {
+                                updated = true;
+                                topItemsRef.child(entry.getKey().toString() + "_k").removeValue();
+                                topItemsRef.child(Integer.toString(updatedSearchCount) + "_k").setValue(entry.getValue());
+                                break;
+                            }
+                        }
+
+                        Integer firstKey = topTenItems.firstKey();
+
+                        // if the entry was not previously in the top 10 but has now surpassed the bottom entry,
+                        // replace the bottom entry
+                        if (!updated && (firstKey < updatedSearchCount))
+                        {
+                            topItemsRef.child(firstKey.toString() + "_k").removeValue();
+                            topItemsRef.child(firstKey.toString() + "_k").setValue(Utilities.toUpperCase(product_name_str));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                });
             }
 
             @Override

@@ -118,61 +118,6 @@ public class MainActivity extends Activity implements Callable<Void> {
         });
     }
 
-    private String getFileExtension(Uri turi) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(turi));
-    }
-
-    private void upload(){
-        if(uri != null) {
-            Log.d("URI_SUCCESS", "URI loaded successfully");
-            // StorageReference fileRef= storageRef.child("Toilet_Paper.jpg");
-            product = new Item();
-            product.entry = new HashMap<>();
-            //product.name = "Toliet Paper";D:\mtric\Documents\GitHub\Social-Distancing-Programming\app\src\main\res\layout\activity_main.xml
-            //uri = Uri.fromFile(new File(getApplicationContext().getResources().getP(R.drawable.testimage));
-            StorageReference fileReference = storageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(uri));
-            uploadTask = fileReference.putFile(uri)
-                    //uploadTask = storageRef.putBytes(data)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-
-                            taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri url) {
-                                    String imageURL = url.toString();
-                                    product.entry.put("Publix", imageURL);
-                                    // uploadId = dataRef.push().getKey();
-                                    //dataRef.child(uploadId).setValue(product);
-                                    String uploadId = itemref.push().getKey();
-                                    itemref.child("Toilet_Paper").setValue(product);
-                                }
-                            });
-                            //Toast.makeText(MainActivity.this, taskSnapshot.getMetadata().getReference().getPath().toString() , Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                               /* double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                                mProgressBar.setProgress((int) progress);*/
-                        }
-                    });
-        }
-        else
-            Log.d("URI_FAIL", "URI has failed to load");
-
-    }
-
     @Override
     public void onStart()
     {
@@ -261,7 +206,7 @@ public class MainActivity extends Activity implements Callable<Void> {
                                 // create a new User object to serialize
                                 User user = new User();
                                 user.level = "Bronze";
-                                user.points = 0;
+                                user.points = "0";
                                 user.requests = new HashMap<>();
                                 HashMap<String, String> emptyHashEntry = new HashMap<>();
                                 emptyHashEntry.put(" ", " ");

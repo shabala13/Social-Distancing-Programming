@@ -66,6 +66,7 @@ public class HomePageActivity extends AppCompatActivity implements Callable<Void
 
                     if (!event.isShiftPressed()) {
                         if (view.getId() == R.id.search_bar) {
+
                             String product_name = s_bar.getText().toString();
                             Intent intent = new Intent(getApplicationContext(), ResultPageActivity.class);
                             Bundle bundle = new Bundle();
@@ -101,18 +102,12 @@ public class HomePageActivity extends AppCompatActivity implements Callable<Void
         Bundle bundle;
 
         // opens user profile page
-        switch (item.getItemId()) {
-            case R.id.profile_page_selection:
-                Intent profile_page_selection = new Intent(this, ProfileActivity.class);
-                bundle = new Bundle();
-                bundle.putParcelable("user", (Parcelable) firebaseUser);
-                profile_page_selection.putExtras(bundle);
-                startActivity(profile_page_selection);
-                break;
-
-            case R.id.close_selection:
-                finish();
-                break;
+        if (item.getItemId() == R.id.profile_page_selection) {
+            Intent profile_page_selection = new Intent(this, ProfileActivity.class);
+            bundle = new Bundle();
+            bundle.putParcelable("user", (Parcelable) firebaseUser);
+            profile_page_selection.putExtras(bundle);
+            startActivity(profile_page_selection);
         }
         return true;
     }
@@ -140,7 +135,10 @@ public class HomePageActivity extends AppCompatActivity implements Callable<Void
                 TreeMap<Integer, String> topTenItems = new TreeMap<>();
 
                 for (HashMap.Entry entry : topTenItemsString.entrySet())
-                    topTenItems.put(Integer.parseInt((String) entry.getKey()), (String) entry.getValue());
+                {
+                    String[] newKey = entry.getKey().toString().split("[_]");
+                    topTenItems.put(Integer.parseInt(newKey[0]), (String) entry.getValue());
+                }
 
                 // add items to List<String> temp_result_list in descending order
                 for(NavigableMap.Entry<Integer, String> entry : topTenItems.descendingMap().entrySet()) {

@@ -58,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
                 // serialize the result from userRef into a User object
                 User user = dataSnapshot.getValue(User.class);
 
-                points.setText(Long.toString(user.points));
+                points.setText(user.points);
                 level.setText(user.level);
 
                 // change level's text color to reflect user's level

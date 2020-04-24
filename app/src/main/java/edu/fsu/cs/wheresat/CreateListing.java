@@ -26,8 +26,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -45,6 +49,7 @@ public class CreateListing extends Activity {
     private EditText store;
     private TextView latitudeTextView, longitudeTextView;
     private byte[] byteArray;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,7 @@ public class CreateListing extends Activity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         productName = bundle.getString("productName");
+        firebaseUser = getIntent().getExtras().getParcelable("user");
         getCurrentLoc = (Button) findViewById(R.id.getLocationButton);
         submit = (Button) findViewById(R.id.submitButton);
         store = (EditText) findViewById(R.id.store);
@@ -138,7 +144,7 @@ public class CreateListing extends Activity {
     // uploads new listing to database
     private void upload(byte[] byteArray) {
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // gets a reference to the entries of a specific product in DB
         final DatabaseReference entryRef = database.getReference().child("Item").child(Utilities.toUpperCase(productName)).child("entries");
@@ -155,6 +161,30 @@ public class CreateListing extends Activity {
         if(byteArray == null) {
             product.image = "https://firebasestorage.googleapis.com/v0/b/where-sat.appspot.com/o/default_image.jpg?alt=media&token=d03a93f3-7694-4cca-b7e1-b6167e410eb7";
             entryRef.child(key).setValue(product);
+
+            // give user 5 points for this post
+            final DatabaseReference userPointsRef = database.getReference().child(firebaseUser.getUid()).child("points");
+            userPointsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Integer currentPoints = Integer.decode(dataSnapshot.getValue(String.class));
+                    currentPoints += 5;
+
+                    // check for level up. these if statement prevents unnecessary writes to the db
+                    DatabaseReference userLevelRef = database.getReference().child(firebaseUser.getUid()).child("level");
+                    if (currentPoints - 5 < 1000 && currentPoints >= 1000)
+                        userLevelRef.setValue("Silver");
+
+                    else if (currentPoints - 5 < 10000 && currentPoints >= 10000)
+                        userLevelRef.setValue("Gold");
+
+                    userPointsRef.setValue(currentPoints.toString());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+
         } else {
             UploadTask uploadTask = (UploadTask) storageRef.child(key).putBytes(byteArray)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -174,7 +204,28 @@ public class CreateListing extends Activity {
                                     }
                                 });
 
-                                Log.d("CreateListing.class", "Upload successful.");
+                            // give user 50 points for posting with a picture
+                            final DatabaseReference userPointsRef = database.getReference().child(firebaseUser.getUid()).child("points");
+                            userPointsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Integer currentPoints = Integer.decode(dataSnapshot.getValue(String.class));
+                                    currentPoints += 50;
+
+                                    // check for level up. these if statement prevents unnecessary writes to the db
+                                    DatabaseReference userLevelRef = database.getReference().child(firebaseUser.getUid()).child("level");
+                                    if (currentPoints - 50 < 1000 && currentPoints >= 1000)
+                                        userLevelRef.setValue("Silver");
+
+                                    else if (currentPoints - 50 < 10000 && currentPoints >= 10000)
+                                        userLevelRef.setValue("Gold");
+
+                                    userPointsRef.setValue(currentPoints.toString());
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {}
+                            });
 
                             }
                         }).addOnFailureListener(new OnFailureListener() {
