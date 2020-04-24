@@ -26,7 +26,7 @@ Our application requires a login, so either create a new account using the "Crea
 Note that the login may not respond right away, especially on emulators. This is a Firebase issue and after waiting for a few seconds it should log you in.
 
 ## Known Bugs
-- On API 19, the Top 10 searches list has white text instead of black text
 - The "View on Map" function does not display a map on the emulators, but it does display a map on actual devices
-- Sometimes pictures upload rotated
-- When you open camera the first time you have to open it and then back out
+- On some API's, the Top 10 searches list has white text instead of black text.
+- On some phones, pictures will upload rotated. This was happening previously and we implemented a fix for it. The fix worked on the vast majority of devices, but not all.
+- When you open the camera for the first time it will ask for permissions. This opens the camera app itself, so you have to hit the back button and then click "Take a Picture" again. This only needs to be done when giving permissions. Otherwise is works normally.
