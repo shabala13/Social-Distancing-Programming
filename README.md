@@ -27,5 +27,6 @@ Note that the login may not respond right away, especially on emulators. This is
 
 ## Known Bugs
 - On API 19, the Top 10 searches list has white text instead of black text
+- The "View on Map" function does not display a map on the emulators, but it does display a map on actual devices
 - Sometimes pictures upload rotated
 - When you open camera the first time you have to open it and then back out
