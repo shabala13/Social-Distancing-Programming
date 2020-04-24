@@ -1,8 +1,11 @@
 package edu.fsu.cs.wheresat;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -12,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.content.Context;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,7 +39,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ResultPageActivity extends AppCompatActivity implements Callable<Void> {
     ListView listViewProduct;
-    Context ctx;
     ImageButton back_button;
     TextView product_name;
     FirebaseUser firebaseUser;
@@ -181,7 +184,7 @@ public class ResultPageActivity extends AppCompatActivity implements Callable<Vo
                 // get HashMap from DB
                 GenericTypeIndicator<HashMap<String, ProductEntry>> genericTypeIndicator = new GenericTypeIndicator<HashMap<String, ProductEntry>>() {};
                 HashMap<String, ProductEntry> productEntryHashMap = dataSnapshot.getValue(genericTypeIndicator);
-                List<ProductEntry> productEntryList = new ArrayList<ProductEntry>();
+                final List<ProductEntry> productEntryList = new ArrayList<ProductEntry>();
                 listViewProduct = (ListView) findViewById(R.id.product_entry_list);
 
                 if(productEntryHashMap != null) {
@@ -208,19 +211,54 @@ public class ResultPageActivity extends AppCompatActivity implements Callable<Vo
                     });
 
                 } else {
-                    ProductEntry empty = new ProductEntry();
-                    empty.store = "No results found.";
-                    empty.image = null;
-                    empty.lat = null;
-                    empty.lon = null;
-                    productEntryList.add(empty);
+                    // add user's request to their personal request list
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(firebaseUser.getUid());
 
-                    listViewProduct.setAdapter(new ProductListAdapter(getApplicationContext(), R.layout.single_result, productEntryList));
+                    // check to see if the user's request list is empty. if it is, overwrite the blank entry with the brand new entry
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            // serialize the result from userRef into a User object
+                            User user = dataSnapshot.getValue(User.class);
+
+                            String currentDate = new SimpleDateFormat("M/dd", Locale.getDefault()).format(new Date());
+                            String currentTime = new SimpleDateFormat("h:mm a", Locale.getDefault()).format(new Date());
+                            Request request = new Request(product_name_str, currentDate, currentTime);
+
+                            DatabaseReference requestsRef = FirebaseDatabase.getInstance().getReference(firebaseUser.getUid()).child("requests");
+
+                            for (Request entry : user.getRequestList())
+                            {
+                                if (entry.itemName.equals(" "))
+                                {
+                                    String newRequest = requestsRef.push().getKey();
+                                    requestsRef.child(newRequest).setValue(request);
+                                    requestsRef.child(" ").removeValue();
+                                    break;
+                                }
+
+                                else
+                                {
+                                    String newRequest = requestsRef.push().getKey();
+                                    requestsRef.child(newRequest).setValue(request);
+                                    break;
+                                }
+                            }
+
+                            ProductEntry empty = new ProductEntry();
+                            empty.store = "No results found.";
+                            empty.image = null;
+                            empty.lat = null;
+                            empty.lon = null;
+                            productEntryList.add(empty);
+
+                            listViewProduct.setAdapter(new ProductListAdapter(getApplicationContext(), R.layout.single_result, productEntryList));
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                    });
                 }
-
-
             }
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

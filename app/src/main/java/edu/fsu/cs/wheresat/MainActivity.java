@@ -209,7 +209,9 @@ public class MainActivity extends Activity implements Callable<Void> {
                                 user.points = "0";
                                 user.requests = new HashMap<>();
                                 HashMap<String, String> emptyHashEntry = new HashMap<>();
-                                emptyHashEntry.put(" ", " ");
+                                emptyHashEntry.put("date", " ");
+                                emptyHashEntry.put("itemName", " ");
+                                emptyHashEntry.put("time", " ");
                                 user.requests.put(" ", emptyHashEntry);
 
                                 // this call adds the UID and the User POJO into the DB. by using
