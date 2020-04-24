@@ -23,7 +23,9 @@ Our application requires a login, so either create a new account using the "Crea
 - Email: test@gmail.com
 - Password: password
 
+Note that the login may not respond right away, especially on emulators. This is a Firebase issue and after waiting for a few seconds it should log you in.
+
 ## Known Bugs
-Explain in more detail:
+- On API 19, the Top 10 searches list has white text instead of black text
 - Sometimes pictures upload rotated
 - When you open camera the first time you have to open it and then back out
